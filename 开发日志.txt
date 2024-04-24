@@ -1,0 +1,6 @@
+ 
+4月20,21日 确定了结课作业的方向和基本内容，进行需求分析，确定测试版应有功能
+
+4月22日 完成指定城市天气报告的功能，使用okhttp3组件，调用openweathermap api
+
+4月23日 改用 retrofit2 组件实现 weatherreport，建立github仓库
