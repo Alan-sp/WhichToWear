@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.android.whichtowear.ui.Closet.ClosetScreen
 import com.android.whichtowear.ui.Main.nav.MainBottomNav
+import com.android.whichtowear.ui.Suit.SuitScreen
 
 @Composable
 fun MainScreen(
@@ -55,7 +56,7 @@ fun MainScreen(
             }
             composable("suit")
             {
-
+                SuitScreen()
             }
             composable("outfit")
             {

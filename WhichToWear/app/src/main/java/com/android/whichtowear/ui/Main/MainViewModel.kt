@@ -9,9 +9,9 @@ import javax.inject.Inject
 sealed class MainUiState(val route:String,val icon:Int)
 {
 //    companion object{
-    object Closet : MainUiState("Closet",1)
-    object Suit : MainUiState("Suit",1)
-    object Outfit : MainUiState("Outfit",1)
+    object Closet : MainUiState("closet",1)
+    object Suit : MainUiState("suit",1)
+    object Outfit : MainUiState("outfit",1)
 //    }
 }
 @HiltViewModel
