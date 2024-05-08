@@ -4,3 +4,5 @@
 4月22日 完成指定城市天气报告的功能，使用okhttp3组件，调用openweathermap api
 
 4月23日 改用 retrofit2 组件实现 weatherreport，建立github仓库
+
+5月7,8日 添加了Room数据库，完成了前后端连接
