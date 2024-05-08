@@ -1,6 +1,7 @@
 package com.android.whichtowear.ui.Closet
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.toClothingList
@@ -12,8 +13,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class ClosetUiState {
-    class PhotoList(val photos: List<Clothing>) : ClosetUiState()
+sealed class ClosetUiState (var TabUiState: Int)
+{
+    class PhotoList(val photos: List<Clothing>) : ClosetUiState(0)
 }
 
 @HiltViewModel
@@ -27,11 +29,15 @@ class ClosetViewModel @Inject constructor(private val repository: ClothingRespos
             repository.GetAll().collect {
                 updateState(ClosetUiState.PhotoList(it))
             }
+            Log.d("do","INIt")
         }
     }
 
     private fun updateState(newState: ClosetUiState) {
         _uiState.value = newState
+    }
+    fun changeTabUiState(newState: Int){
+        _uiState.value.TabUiState = newState
     }
 
     fun addPhotos(photos: List<Uri>) {

@@ -60,6 +60,7 @@ fun MainScreen(
                 ClosetScreen(
                     uiState = closetUiState,
                     addPhotos = viewModel::addPhotos,
+                    changeTabUiState = viewModel::changeTabUiState,
                     navigate = navigate
                 )
             }
