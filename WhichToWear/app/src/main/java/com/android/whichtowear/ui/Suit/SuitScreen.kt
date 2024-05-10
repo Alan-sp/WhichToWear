@@ -43,6 +43,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
+import com.android.whichtowear.retro.data.Weather
 import java.util.*
 
 @SuppressLint("MissingPermission")
@@ -59,8 +60,13 @@ private fun getLocationCityName(context: Context,location: Location?): String {
 
 
 @Composable
-fun SuitScreen() {
-    var weatherInfo by remember { mutableStateOf("") }
+fun SuitScreen(
+    weatherState: Weather,
+    changeWeatherState:(String) -> Unit
+) {
+    var weatherInfo by remember { mutableStateOf(
+        "\"City: ${weatherState.main}, Country: ${weatherState.country}\\nWeather: ${weatherState.info}, Temperature: ${weatherState.temp - 273.15}°C\""
+    ) }
 
     val context = LocalContext.current
     var location by remember { mutableStateOf<Location?>(null) }
@@ -113,30 +119,12 @@ fun SuitScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        OutlinedTextField(
-//            value = city,
-//            onValueChange = { city = it },
-//            label = { Text("Enter city") },
-//            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-//            keyboardActions = KeyboardActions(
-//                onDone = {
-//                    // When user presses Done button on keyboard
-//                    // Fetch weather info
-//                    fetchWeather(city, callback = { weatherInfo = it })
-//                }
-//            ),
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(bottom = 16.dp)
-//        )
-
-
-
         Button(onClick = {
             location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             cityName = getLocationCityName(context,location) ?: "Unknown"
+            changeWeatherState(cityName!!)
             Log.d("CityName",cityName!!)
-            fetchWeather(cityName ?: "Tokyo", callback = { weatherInfo = it }) }
+            }
         ) {
             Text("Get Weather")
         }
@@ -164,8 +152,7 @@ fun fetchWeather(city: String, callback: (String) -> Unit) {
             val temperature = json.getJSONObject("main").getDouble("temp")
             val country = json.getJSONObject("sys").getString("country")
 
-            val weatherInfo = "City: $city, Country: $country\nWeather: $weather, Temperature: ${temperature-273.15}°C"
-            callback(weatherInfo)
+//            callback(weatherInfo)
         } else{
             callback("Error: Unable to fetch weather information.")
         }

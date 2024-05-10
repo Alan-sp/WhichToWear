@@ -16,7 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.android.whichtowear.ui.Datail.DetailScreen
+import com.android.whichtowear.ui.Detail.DetailScreen
 import com.android.whichtowear.ui.theme.WhichToWearTheme
 import com.android.whichtowear.ui.Main.MainScreen
 import com.android.whichtowear.ui.Main.MainViewModel

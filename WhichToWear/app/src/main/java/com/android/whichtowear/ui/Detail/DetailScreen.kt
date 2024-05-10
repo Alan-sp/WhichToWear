@@ -1,4 +1,4 @@
-package com.android.whichtowear.ui.Datail
+package com.android.whichtowear.ui.Detail
 
 import androidx.compose.runtime.Composable
 

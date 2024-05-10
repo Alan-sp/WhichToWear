@@ -44,6 +44,7 @@ import timber.log.Timber
 @Composable
 fun ClosetScreen(
     uiState: ClosetUiState,
+    TabUiState: Int,
     changeTabUiState: (Int) -> Unit,
     addPhotos: (List<Uri>) -> Unit,
     navigate: (String) -> Unit
@@ -65,26 +66,26 @@ fun ClosetScreen(
         }
     }
     var tabSelectedIndex = 1
-    var isSelected = uiState.TabUiState
+    var isSelected = TabUiState
 
 
     Scaffold(
         topBar = {
             Column() {
                 TopAppBar(title = { Text(text = "我的衣橱") })
-                TabRow(selectedTabIndex = isSelected) {
+                TabRow(selectedTabIndex = TabUiState) {
                     Tab(
-                        selected = isSelected == 0,
+                        selected = TabUiState == 0,
                         onClick = { changeTabUiState(0) },
                         text = { Text(text = "上衣") }
                     )
                     Tab(
-                        selected = isSelected == 1,
-                        onClick = { changeTabUiState(1)},
+                        selected = TabUiState == 1,
+                        onClick = { changeTabUiState(1) },
                         text = { Text(text = " 裤子") }
                     )
                     Tab(
-                        selected = isSelected == 2,
+                        selected = TabUiState == 2,
                         onClick = { changeTabUiState(2) },
                         text = { Text(text = "鞋子") }
                     )

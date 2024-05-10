@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,6 +23,7 @@ import com.android.whichtowear.ui.Closet.ClosetScreen
 import com.android.whichtowear.ui.Closet.ClosetViewModel
 import com.android.whichtowear.ui.Main.nav.MainBottomNav
 import com.android.whichtowear.ui.Suit.SuitScreen
+import com.android.whichtowear.ui.Suit.SuitViewModel
 
 @Composable
 fun MainScreen(
@@ -57,16 +59,26 @@ fun MainScreen(
             {
                 val viewModel = hiltViewModel<ClosetViewModel>()
                 val closetUiState by viewModel.uiState.collectAsState()
-                ClosetScreen(
-                    uiState = closetUiState,
-                    addPhotos = viewModel::addPhotos,
-                    changeTabUiState = viewModel::changeTabUiState,
-                    navigate = navigate
-                )
+                val tabState by viewModel.TabUiState.observeAsState()
+                tabState?.let { it1 ->
+                    ClosetScreen(
+                        uiState = closetUiState,
+                        TabUiState = it1,
+                        addPhotos = viewModel::addPhotos,
+                        changeTabUiState = viewModel::changeTabUiState,
+                        navigate = navigate
+                    )
+                }
             }
             composable("suit")
             {
-                SuitScreen()
+                val viewModel = hiltViewModel<SuitViewModel>()
+//                val SuitUiState by viewModel.uiState.collectAsState()
+                val weatherState by viewModel.weatherState.collectAsState()
+                SuitScreen(
+                    weatherState = weatherState,
+                    changeWeatherState = viewModel::changeWeatherState
+                )
             }
             composable("outfit")
             {
