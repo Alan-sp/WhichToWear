@@ -1,9 +1,9 @@
-package com.android.whichtowear.database
+package com.android.whichtowear.db.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.android.whichtowear.dao.ClothingDao
-import com.android.whichtowear.entity.Clothing
+import com.android.whichtowear.db.dao.ClothingDao
+import com.android.whichtowear.db.entity.Clothing
 
 @Database(
     entities = [Clothing::class],
