@@ -1,6 +1,9 @@
 package com.android.whichtowear.ui.Closet
 
 import android.net.Uri
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.toClothingList
@@ -12,7 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class ClosetUiState {
+sealed class ClosetUiState ()
+{
     class PhotoList(val photos: List<Clothing>) : ClosetUiState()
 }
 
@@ -21,6 +25,9 @@ class ClosetViewModel @Inject constructor(private val repository: ClothingRespos
 
     private val _uiState = MutableStateFlow<ClosetUiState>(ClosetUiState.PhotoList(emptyList()))
     val uiState: StateFlow<ClosetUiState> = _uiState
+
+    private val _TabUiState = MutableLiveData<Int>(0)
+    val TabUiState: LiveData<Int> = _TabUiState
 
     init {
         viewModelScope.launch {
@@ -32,6 +39,9 @@ class ClosetViewModel @Inject constructor(private val repository: ClothingRespos
 
     private fun updateState(newState: ClosetUiState) {
         _uiState.value = newState
+    }
+    fun changeTabUiState(newState: Int){
+        _TabUiState.value = newState
     }
 
     fun addPhotos(photos: List<Uri>) {

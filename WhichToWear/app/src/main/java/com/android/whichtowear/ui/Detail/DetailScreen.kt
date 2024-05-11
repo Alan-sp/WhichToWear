@@ -264,3 +264,4 @@ private fun DetailScreenImage(modifier: Modifier = Modifier, image: String) {
 //        }
 //    }
 //}
+

@@ -24,6 +24,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -42,6 +44,8 @@ import timber.log.Timber
 @Composable
 fun ClosetScreen(
     uiState: ClosetUiState,
+    TabUiState: Int,
+    changeTabUiState: (Int) -> Unit,
     addPhotos: (List<Uri>) -> Unit,
     navigate: (String) -> Unit
 ) {
@@ -61,9 +65,32 @@ fun ClosetScreen(
             Timber.d("No media selected")
         }
     }
+    var tabSelectedIndex = 1
+    var isSelected = TabUiState
+
+
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Closet") })
+            Column() {
+                TopAppBar(title = { Text(text = "我的衣橱") })
+                TabRow(selectedTabIndex = TabUiState) {
+                    Tab(
+                        selected = TabUiState == 0,
+                        onClick = { changeTabUiState(0) },
+                        text = { Text(text = "上衣") }
+                    )
+                    Tab(
+                        selected = TabUiState == 1,
+                        onClick = { changeTabUiState(1) },
+                        text = { Text(text = " 裤子") }
+                    )
+                    Tab(
+                        selected = TabUiState == 2,
+                        onClick = { changeTabUiState(2) },
+                        text = { Text(text = "鞋子") }
+                    )
+                }
+            }
         },
         floatingActionButton = {
             if (uiState is ClosetUiState.PhotoList && uiState.photos.isNotEmpty())
@@ -85,6 +112,7 @@ fun ClosetScreen(
                 )
         }
     ) {
+
         Box(
             modifier = Modifier
                 .padding(it)
