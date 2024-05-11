@@ -1,6 +1,6 @@
-package com.android.whichtowear.repository
+package com.android.whichtowear.db.repository
 
-import com.android.whichtowear.entity.Clothing
+import com.android.whichtowear.db.entity.Clothing
 import kotlinx.coroutines.flow.Flow
 
 interface ClothingRespository{

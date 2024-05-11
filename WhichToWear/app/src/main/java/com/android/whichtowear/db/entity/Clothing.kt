@@ -1,4 +1,4 @@
-package com.android.whichtowear.entity
+package com.android.whichtowear.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,9 +1,9 @@
-package com.android.whichtowear.dao
+package com.android.whichtowear.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.android.whichtowear.entity.Clothing
+import com.android.whichtowear.db.entity.Clothing
 import kotlinx.coroutines.flow.Flow
 
 @Dao

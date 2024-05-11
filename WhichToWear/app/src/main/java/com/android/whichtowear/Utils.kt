@@ -2,7 +2,7 @@ package com.android.whichtowear
 
 import android.net.Uri
 import android.text.format.DateUtils
-import com.android.whichtowear.entity.Clothing
+import com.android.whichtowear.db.entity.Clothing
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

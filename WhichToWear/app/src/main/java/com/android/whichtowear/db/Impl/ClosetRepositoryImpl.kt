@@ -1,8 +1,8 @@
-package com.android.whichtowear.Impl
+package com.android.whichtowear.db.Impl
 
-import com.android.whichtowear.dao.ClothingDao
-import com.android.whichtowear.entity.Clothing
-import com.android.whichtowear.repository.ClothingRespository
+import com.android.whichtowear.db.dao.ClothingDao
+import com.android.whichtowear.db.entity.Clothing
+import com.android.whichtowear.db.repository.ClothingRespository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

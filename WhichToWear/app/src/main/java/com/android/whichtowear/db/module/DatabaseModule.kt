@@ -1,9 +1,9 @@
-package com.android.whichtowear.module
+package com.android.whichtowear.db.module
 
 import android.app.Application
 import androidx.room.Room
-import com.android.whichtowear.dao.ClothingDao
-import com.android.whichtowear.database.ClothingDatabase
+import com.android.whichtowear.db.dao.ClothingDao
+import com.android.whichtowear.db.database.ClothingDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.toClothingList
-import com.android.whichtowear.entity.Clothing
-import com.android.whichtowear.repository.ClothingRespository
+import com.android.whichtowear.db.entity.Clothing
+import com.android.whichtowear.db.repository.ClothingRespository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
