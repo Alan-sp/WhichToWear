@@ -3,7 +3,10 @@ package com.android.whichtowear
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -17,6 +20,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.android.whichtowear.survey.SurveyResultScreen
+import com.android.whichtowear.survey.SurveyRoute
 import com.android.whichtowear.ui.Detail.DetailScreen
 import com.android.whichtowear.ui.Detail.DetailViewModel
 import com.android.whichtowear.ui.theme.WhichToWearTheme
@@ -46,7 +51,10 @@ class MainActivity : ComponentActivity() {
 fun HomeScreen()
 {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "main"){
+    NavHost(
+        navController = navController,
+        startDestination = "main"
+    ){
         composable("main"){
             val viewModel = hiltViewModel<MainViewModel>()
             val uiState by viewModel.uiState.observeAsState()
@@ -59,6 +67,22 @@ fun HomeScreen()
                 )
             }
         }
+
+        composable("survey"){
+            SurveyRoute(
+                onSurveyComplete = {
+                    navController.navigate("surveyresults")
+                },
+                onNavUp = navController::navigateUp,
+            )
+        }
+
+        composable("surveyresults") {
+            SurveyResultScreen {
+                navController.popBackStack("main", false)
+            }
+        }
+
         composable(
             "detail/{clothId}",
             arguments = listOf(navArgument("clothId"){ type = NavType.IntType })

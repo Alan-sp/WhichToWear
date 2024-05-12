@@ -1,12 +1,11 @@
 package com.android.whichtowear.ui.Closet
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.whichtowear.toClothingList
+import com.android.whichtowear.util.toClothingList
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.db.repository.ClothingRespository
 import dagger.hilt.android.lifecycle.HiltViewModel

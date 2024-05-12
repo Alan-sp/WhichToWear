@@ -57,6 +57,12 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -115,6 +121,15 @@ dependencies {
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+    implementation("androidx.compose.material:material-icons-extended:1.5.0")
+
+    implementation("androidx.fragment:fragment:1.3.6")
+
+
 }
 
 kapt {

@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import com.android.whichtowear.ui.Main.MainUiState
 
 @Composable
-fun MainBottomNav(navController: NavController,uiState:MainUiState,updateUiState: (MainUiState) -> Unit)
+fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiState: (MainUiState) -> Unit)
 {
     NavigationBar {
         NavigationBarItem(selected = uiState.route == MainUiState.Closet.route,

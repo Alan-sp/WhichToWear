@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor(): ViewModel()
     private val _uiState = MutableLiveData<MainUiState>(MainUiState.Closet)
     val uiState : LiveData<MainUiState>
         get() = _uiState
-    fun updateUiState(newState:MainUiState)
+    fun updateUiState(newState: MainUiState)
     {
         _uiState.value = newState
     }

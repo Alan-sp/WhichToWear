@@ -29,7 +29,7 @@ import com.android.whichtowear.ui.Suit.SuitViewModel
 fun MainScreen(
     navigate:(String) -> Unit,
     updateUiState: (MainUiState) -> Unit,
-    uiState:MainUiState
+    uiState: MainUiState
 )
 {
     val navController:NavHostController = rememberNavController()

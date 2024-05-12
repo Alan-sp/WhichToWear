@@ -96,11 +96,14 @@ fun ClosetScreen(
             if (uiState is ClosetUiState.PhotoList && uiState.photos.isNotEmpty())
                 ExtendedFloatingActionButton(
                     onClick = {
+
+                        // TODO:这里希望写问卷跳转
                         launcher.launch(
                             PickVisualMediaRequest(
                                 ActivityResultContracts.PickVisualMedia.ImageOnly
                             )
                         )
+                        navigate("survey")
                     },
                     text = { Text("Clothes") },
                     icon = {

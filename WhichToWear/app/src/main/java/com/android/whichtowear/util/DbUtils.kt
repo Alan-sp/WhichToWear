@@ -1,4 +1,4 @@
-package com.android.whichtowear
+package com.android.whichtowear.util
 
 import android.net.Uri
 import android.text.format.DateUtils
