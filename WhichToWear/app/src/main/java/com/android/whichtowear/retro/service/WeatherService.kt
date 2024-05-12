@@ -10,5 +10,5 @@ import retrofit2.http.Query
 interface WeatherService {
     //自动反序列化为Java对象
     @GET("weather")
-    fun getValue(@Query("q") city:String, @Query("appid") apiKey:String): Call<ResponseBody>
+    fun getValue(@Query("lat") latitude:Double, @Query("lon") longitude:Double, @Query("appid") apiKey:String,@Query("lang") language:String = "zh_cn") : Call<ResponseBody>
 }

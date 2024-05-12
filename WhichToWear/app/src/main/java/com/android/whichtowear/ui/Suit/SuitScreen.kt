@@ -41,9 +41,28 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.core.app.ActivityCompat
 import com.android.whichtowear.retro.data.Weather
+import com.bumptech.glide.integration.compose.GlideImage
 import java.util.*
 
 @SuppressLint("MissingPermission")
@@ -59,10 +78,12 @@ private fun getLocationCityName(context: Context,location: Location?): String {
 }
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuitScreen(
     weatherState: Weather,
-    changeWeatherState:(String) -> Unit
+    changeWeatherState:(Location) -> Unit
 ) {
     var weatherInfo by remember { mutableStateOf(
         "\"City: ${weatherState.main}, Country: ${weatherState.country}\\nWeather: ${weatherState.info}, Temperature: ${weatherState.temp - 273.15}°C\""
@@ -71,6 +92,7 @@ fun SuitScreen(
     val context = LocalContext.current
     var location by remember { mutableStateOf<Location?>(null) }
     var cityName by remember { mutableStateOf<String?>(null) }
+    val scope  = rememberCoroutineScope()
 
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -111,50 +133,65 @@ fun SuitScreen(
             locationListener
         )
     }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text(text = "xx市") })
+        },
     ) {
-        Button(onClick = {
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            cityName = getLocationCityName(context,location) ?: "Unknown"
-            changeWeatherState(cityName!!)
-            Log.d("CityName",cityName!!)
-            }
+        Box(
+            modifier = Modifier
+                .padding(it)
+                .padding(horizontal = 16.dp)
         ) {
-            Text("Get Weather")
-        }
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(4.dp)
+            ) {
+                Column(modifier = Modifier.padding(vertical = 16.dp)) {
+                    Column {
+                        Box(modifier = Modifier.size(16.dp))
+                        Text(
+                            text = "${(weatherState.temp- 273.15).toInt()} Degree",
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text =  "weatherState.info",
+                        )
+//                        Icon(
+//                            imageVector = Icons.Filled.Add,
+//                        )
+                    }
+                    Box(modifier = Modifier.size(16.dp))
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = {
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                    cityName = getLocationCityName(context, location) ?: "Unknown"
+//                    Log.d("CityName", "${location!!.latitude}")
+                    location?.let { it1 -> changeWeatherState(it1) }
+//                    fetchWeather(cityName!!) {
+//                        weatherInfo = it
+//                    }
+                }
+                ) {
+                    Text("Get Weather")
+                }
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = weatherInfo,
-            fontSize = 20.sp,
-        )
-    }
-}
-
-fun fetchWeather(city: String, callback: (String) -> Unit) {
-
-    var service: WeatherService = WeatherService.service
-    thread{
-        val apiKey = "b7670b355ce71c6e52afaa8ba3573807"
-        val result: Call<ResponseBody> = service.getValue(city,apiKey)
-        val response: Response<ResponseBody> = result.execute()
-        val responseBody = response.body()?.string()
-        if (response.isSuccessful && !responseBody.isNullOrBlank()) {
-            val json = JSONObject(responseBody)
-            val weather = json.getJSONArray("weather").getJSONObject(0).getString("description")
-            val temperature = json.getJSONObject("main").getDouble("temp")
-            val country = json.getJSONObject("sys").getString("country")
-
-//            callback(weatherInfo)
-        } else{
-            callback("Error: Unable to fetch weather information.")
+                Text(
+                    text = "\"City: ${weatherState.main}, Country: ${weatherState.country}\\nWeather: ${weatherState.info}, Temperature: ${weatherState.temp - 273.15}°C\"",
+//                    text = weatherInfo,
+                    fontSize = 20.sp,
+                )
+            }
         }
     }
 }
