@@ -46,29 +46,8 @@ fun ClosetScreen(
     uiState: ClosetUiState,
     TabUiState: Int,
     changeTabUiState: (Int) -> Unit,
-    addPhotos: (List<Uri>) -> Unit,
     navigate: (String) -> Unit
 ) {
-    val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
-    ) { uris ->
-        if (uris.isNotEmpty()) {
-            Timber.d("Number of items selected: ${uris.size}")
-            for (uri in uris)
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-            addPhotos(uris)
-        } else {
-            Timber.d("No media selected")
-        }
-    }
-    var tabSelectedIndex = 1
-    var isSelected = TabUiState
-
-
     Scaffold(
         topBar = {
             Column() {
@@ -96,13 +75,6 @@ fun ClosetScreen(
             if (uiState is ClosetUiState.PhotoList && uiState.photos.isNotEmpty())
                 ExtendedFloatingActionButton(
                     onClick = {
-
-                        // TODO:这里希望写问卷跳转
-                        launcher.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
-                            )
-                        )
                         navigate("survey")
                     },
                     text = { Text("Clothes") },
@@ -155,11 +127,7 @@ fun ClosetScreen(
                         Box(modifier = Modifier.height(16.dp))
                         ExtendedFloatingActionButton(
                             onClick = {
-                                launcher.launch(
-                                    PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly
-                                    )
-                                )
+                                navigate("survey")
                             },
                             text = { Text("Clothes") },
                             icon = {

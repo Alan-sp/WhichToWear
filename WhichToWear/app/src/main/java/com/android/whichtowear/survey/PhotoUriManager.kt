@@ -3,10 +3,14 @@ package com.android.whichtowear.survey
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
+import dagger.Provides
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
+import javax.inject.Inject
 
-class PhotoUriManager(private val appContext: Context) {
-
+class PhotoUriManager @Inject constructor(
+    private val appContext: Context
+) {
     fun buildNewUri(): Uri {
         val photosDir = File(appContext.cacheDir, PHOTOS_DIR)
         photosDir.mkdirs()

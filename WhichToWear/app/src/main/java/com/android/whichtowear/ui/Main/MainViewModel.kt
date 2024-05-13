@@ -12,6 +12,7 @@ sealed class MainUiState(val route:String,val icon:Int)
     object Closet : MainUiState("closet",1)
     object Suit : MainUiState("suit",1)
     object Outfit : MainUiState("outfit",1)
+    object Memo : MainUiState("memo",1)
 //    }
 }
 @HiltViewModel

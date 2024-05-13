@@ -16,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.fragment.app.FragmentManager
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.android.whichtowear.ui.ImageColorPickerScreen
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Calendar
 
@@ -30,9 +32,7 @@ fun SurveyRoute(
     onSurveyComplete: () -> Unit,
     onNavUp: () -> Unit,
 ) {
-    val viewModel: SurveyViewModel = viewModel(
-        factory = SurveyViewModelFactory(PhotoUriManager(LocalContext.current))
-    )
+    val viewModel: SurveyViewModel = hiltViewModel()
 
     val surveyScreenData = viewModel.surveyScreenData ?: return
 
@@ -132,7 +132,14 @@ fun SurveyRoute(
                     imageUri = viewModel.selfieUri,
                     getNewImageUri = viewModel::getNewSelfieUri,
                     onPhotoTaken = viewModel::onSelfieResponse,
+                    addPhotos = viewModel::addPhotos,
                     modifier = modifier,
+                )
+
+                SurveyQuestion.PICK_COLOR -> PickColor(
+                    color = viewModel.color,
+                    onColorChanged = viewModel::onColorResponse,
+                    imageUri = viewModel.selfieUri,
                 )
             }
         }
@@ -191,7 +198,6 @@ private fun showTakeawayDatePicker(
     )
     datePickerDialog.show()
 }
-
 //private tailrec fun Context.findActivity(): AppCompatActivity =
 //    when (this) {
 //        is AppCompatActivity -> this

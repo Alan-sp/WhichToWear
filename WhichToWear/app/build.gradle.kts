@@ -125,11 +125,19 @@ dependencies {
     //coil
     implementation("io.coil-kt:coil-compose:2.6.0")
 
+    //icons
     implementation("androidx.compose.material:material-icons-extended:1.5.0")
 
     implementation("androidx.fragment:fragment:1.3.6")
 
+    //colorpicker
+    implementation("com.github.skydoves:colorpicker-compose:1.0.8")
 
+    // photopicker
+    implementation("com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06")
+
+    // glide
+    implementation ("com.github.bumptech.glide:glide:4.11.0")
 }
 
 kapt {

@@ -11,6 +11,8 @@ import com.android.whichtowear.survey.question.PhotoQuestion
 import com.android.whichtowear.survey.question.SingleChoiceQuestion
 import com.android.whichtowear.survey.question.SliderQuestion
 import com.android.whichtowear.survey.question.Superhero
+import com.android.whichtowear.ui.ImageColorPickerScreen
+import com.github.skydoves.colorpicker.compose.ColorEnvelope
 
 @Composable
 fun FreeTimeQuestion(
@@ -92,6 +94,7 @@ fun TakeSelfieQuestion(
     imageUri: Uri?,
     getNewImageUri: () -> Uri,
     onPhotoTaken: (Uri) -> Unit,
+    addPhotos : (List<Uri?>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PhotoQuestion(
@@ -99,6 +102,20 @@ fun TakeSelfieQuestion(
         imageUri = imageUri,
         getNewImageUri = getNewImageUri,
         onPhotoTaken = onPhotoTaken,
+        addPhotos = addPhotos,
         modifier = modifier,
+    )
+}
+
+@Composable
+fun PickColor(
+    color : ColorEnvelope?,
+    onColorChanged: (colorEnvelope: ColorEnvelope) -> Unit,
+    imageUri: Uri?
+){
+    ImageColorPickerScreen(
+        color = color,
+        onColorChanged = onColorChanged,
+        imageUri = imageUri,
     )
 }

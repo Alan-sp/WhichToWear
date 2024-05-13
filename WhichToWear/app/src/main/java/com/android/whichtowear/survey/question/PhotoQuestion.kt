@@ -1,11 +1,14 @@
 package com.android.whichtowear.survey.question
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -39,6 +42,7 @@ import coil.request.ImageRequest
 import com.android.whichtowear.R
 import com.android.whichtowear.survey.QuestionWrapper
 import com.android.whichtowear.ui.theme.WhichToWearTheme
+import timber.log.Timber
 
 @Composable
 fun PhotoQuestion(
@@ -46,8 +50,26 @@ fun PhotoQuestion(
     imageUri: Uri?,
     getNewImageUri: () -> Uri,
     onPhotoTaken: (Uri) -> Unit,
+    addPhotos: (List<Uri?>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
+    ) { uris ->
+        if (uris.isNotEmpty()) {
+            Timber.d("Number of items selected: ${uris.size}")
+            for (uri in uris)
+                context.contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            onPhotoTaken(uris[0])
+            addPhotos(uris)
+        } else {
+            Timber.d("No media selected")
+        }
+    }
     val hasPhoto = imageUri != null
     val iconResource = if (hasPhoto) {
         Icons.Filled.SwapHoriz
@@ -61,6 +83,7 @@ fun PhotoQuestion(
         onResult = { success ->
             if (success) {
                 onPhotoTaken(newImageUri!!)
+                addPhotos(listOf(newImageUri))
             }
         }
     )
@@ -69,55 +92,73 @@ fun PhotoQuestion(
         titleResourceId = titleResourceId,
         modifier = modifier,
     ) {
-
-        OutlinedButton(
-            onClick = {
-                newImageUri = getNewImageUri()
-                cameraLauncher.launch(newImageUri)
-            },
-            shape = MaterialTheme.shapes.small,
-            contentPadding = PaddingValues()
-        ) {
-            Column {
-                if (hasPhoto) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageUri)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(96.dp)
-                            .aspectRatio(4 / 3f)
-                    )
-                } else {
-                    PhotoDefaultImage(
-                        modifier = Modifier.padding(
-                            horizontal = 86.dp,
-                            vertical = 74.dp
-                        )
-                    )
-                }
-                Row(
+        Column{
+            if (hasPhoto) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(imageUri)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentSize(Alignment.BottomCenter)
-                        .padding(vertical = 26.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = iconResource, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(
-                            id = if (hasPhoto) {
-                                R.string.retake_photo
-                            } else {
-                                R.string.add_photo
-                            }
+                        .heightIn(96.dp)
+                        .aspectRatio(4 / 3f)
+                )
+            } else {
+                PhotoDefaultImage(
+                    modifier = Modifier.padding(
+                        horizontal = 86.dp,
+                        vertical = 74.dp
+                    )
+                )
+            }
+            OutlinedButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.BottomCenter)
+                    .padding(vertical = 26.dp),
+                onClick = {
+                    newImageUri = getNewImageUri()
+                    cameraLauncher.launch(newImageUri)
+                },
+            ) {
+                Icon(imageVector = iconResource, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(
+                        id = if (hasPhoto) {
+                            R.string.retake_photo
+                        } else {
+                            R.string.add_photo
+                        }
+                    )
+                )
+            }
+            OutlinedButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.BottomCenter)
+                    .padding(vertical = 26.dp),
+                onClick = {
+                    launcher.launch(
+                        PickVisualMediaRequest(
+                            ActivityResultContracts.PickVisualMedia.ImageOnly
                         )
                     )
-                }
+                },
+            ) {
+                Icon(imageVector = iconResource, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(
+                        id = if (hasPhoto) {
+                            R.string.retake_photo
+                        } else {
+                            R.string.add_photo
+                        }
+                    )
+                )
             }
         }
     }
@@ -151,6 +192,7 @@ fun PhotoQuestionPreview() {
                 imageUri = Uri.parse("https://example.bogus/wow"),
                 getNewImageUri = { Uri.EMPTY },
                 onPhotoTaken = {},
+                addPhotos = {},
                 modifier = Modifier.padding(16.dp),
             )
         }

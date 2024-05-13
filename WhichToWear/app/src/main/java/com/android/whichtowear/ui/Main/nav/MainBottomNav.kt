@@ -1,6 +1,7 @@
 package com.android.whichtowear.ui.Main.nav
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddTask
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
@@ -40,5 +41,14 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
             },
             icon = { Icon(Icons.Default.Menu, contentDescription = "") },
             label = { Text(text = MainUiState.Outfit.route) })
+        
+        NavigationBarItem(selected = uiState.route == MainUiState.Memo.route,
+            onClick = {
+                updateUiState(MainUiState.Memo)
+                navController.navigate(MainUiState.Memo.route)
+            },
+            icon = { Icon(Icons.Default.AddTask, contentDescription = "")},
+            label = {Text(text = MainUiState.Memo.route)}
+        )
     }
 }

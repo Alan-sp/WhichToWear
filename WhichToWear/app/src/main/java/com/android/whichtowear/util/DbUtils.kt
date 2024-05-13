@@ -6,7 +6,7 @@ import com.android.whichtowear.db.entity.Clothing
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-fun List<Uri>.toClothingList() = run {
+fun List<Uri?>.toClothingList() = run {
     map {
         Clothing(image = it.toString())
     }

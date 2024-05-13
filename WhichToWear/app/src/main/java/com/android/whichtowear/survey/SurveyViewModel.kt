@@ -3,22 +3,33 @@ package com.android.whichtowear.survey
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.android.whichtowear.db.repository.ClothingRespository
 import com.android.whichtowear.survey.question.Superhero
+import com.android.whichtowear.util.toClothingList
+import com.github.skydoves.colorpicker.compose.ColorEnvelope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 const val simpleDateFormatPattern = "EEE, MMM d"
 
-class SurveyViewModel(
+@HiltViewModel
+class SurveyViewModel @Inject constructor(
+    private val repository: ClothingRespository,
     private val photoUriManager: PhotoUriManager
 ) : ViewModel() {
 
     private val questionOrder: List<SurveyQuestion> = listOf(
+        SurveyQuestion.TAKE_SELFIE,
+        SurveyQuestion.PICK_COLOR,
         SurveyQuestion.FREE_TIME,
         SurveyQuestion.SUPERHERO,
         SurveyQuestion.LAST_TAKEAWAY,
         SurveyQuestion.HOT_AND_COLD,
-        SurveyQuestion.TAKE_SELFIE,
     )
 
     private var questionIndex = 0
@@ -44,6 +55,10 @@ class SurveyViewModel(
     private val _selfieUri = mutableStateOf<Uri?>(null)
     val selfieUri
         get() = _selfieUri.value
+
+    private val _color = mutableStateOf<ColorEnvelope?>(null)
+    val color
+        get() = _color.value
 
     // ----- Survey status exposed as State -----
 
@@ -117,6 +132,17 @@ class SurveyViewModel(
         _isNextEnabled.value = getIsNextEnabled()
     }
 
+    fun onColorResponse(color: ColorEnvelope){
+        _color.value = color
+        _isNextEnabled.value = getIsNextEnabled()
+    }
+
+    fun addPhotos(photos: List<Uri?>) {
+        viewModelScope.launch {
+            repository.InsertAll(photos.toClothingList())
+        }
+    }
+
     fun getNewSelfieUri() = photoUriManager.buildNewUri()
 
     private fun getIsNextEnabled(): Boolean {
@@ -126,6 +152,7 @@ class SurveyViewModel(
             SurveyQuestion.LAST_TAKEAWAY -> _takeawayResponse.value != null
             SurveyQuestion.HOT_AND_COLD -> _feelingAboutSelfiesResponse.value != null
             SurveyQuestion.TAKE_SELFIE -> _selfieUri.value != null
+            SurveyQuestion.PICK_COLOR -> _color.value !=null
         }
     }
 
@@ -140,17 +167,17 @@ class SurveyViewModel(
     }
 }
 
-class SurveyViewModelFactory(
-    private val photoUriManager: PhotoUriManager
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SurveyViewModel::class.java)) {
-            return SurveyViewModel(photoUriManager) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+//class SurveyViewModelFactory(
+//    private val photoUriManager: PhotoUriManager
+//) : ViewModelProvider.Factory {
+//    @Suppress("UNCHECKED_CAST")
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        if (modelClass.isAssignableFrom(SurveyViewModel::class.java)) {
+//            return SurveyViewModel(repository = ClothingRespository,photoUriManager) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}
 
 enum class SurveyQuestion {
     FREE_TIME,
@@ -158,6 +185,7 @@ enum class SurveyQuestion {
     LAST_TAKEAWAY,
     HOT_AND_COLD,
     TAKE_SELFIE,
+    PICK_COLOR
 }
 
 data class SurveyScreenData(
