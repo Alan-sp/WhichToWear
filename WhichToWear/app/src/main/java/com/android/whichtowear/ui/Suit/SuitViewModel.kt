@@ -38,7 +38,8 @@ class SuitViewModel @Inject constructor(
                 val temperature = json.getJSONObject("main").getDouble("temp")
                 val country = json.getJSONObject("sys").getString("country")
                 val city = json.getString("name")
-                _weatherState.value = Weather(temperature, weather, city , country, 0)
+                val icon = json.getJSONArray("weather").getJSONObject(0).getString("icon")
+                _weatherState.value = Weather(temperature, weather, city , country, 0,icon)
             }
 //        }
     }

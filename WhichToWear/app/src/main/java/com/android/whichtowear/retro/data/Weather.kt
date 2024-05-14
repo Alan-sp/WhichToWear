@@ -6,9 +6,10 @@ data class Weather (
     val main:String,
     val country:String,
     val wind:Int,
+    val icon:String,
 )
 {
-    companion object {
-        fun empty() = Weather(0.0, "", "", "", 0)
+    companion object { 
+        fun empty() = Weather(0.0, "", "", "", 0,"Snow")
     }
 }

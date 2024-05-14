@@ -52,4 +52,9 @@
     <string name="strongly_like">Strongly\nLike</string>
     <string name="neutral">Neutral</string>
 
+    <item name="Clear" type="drawable">@drawable/vector_android_ic_clear_day</item>
+    <item name="Clouds" type="drawable">@drawable/vector_drawable_ic_cloudy</item>
+    <item name="Fog" type="drawable">@drawable/vector_drawable_ic_fog</item>
+    <item name="Snow" type="drawable">@drawable/vector_drawable_ic_moderate_snow</item>
+    <item name="Rain" type="drawable">@drawable/vector_drawable_ic_moderate_rain</item>
 </resources>

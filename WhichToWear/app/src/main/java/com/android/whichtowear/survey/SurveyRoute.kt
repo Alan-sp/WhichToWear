@@ -18,8 +18,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.fragment.app.FragmentManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+<<<<<<< HEAD
 import com.android.whichtowear.ui.ImageColorPickerScreen
 import com.google.android.material.datepicker.MaterialDatePicker
+=======
+//import com.google.android.material.datepicker.MaterialDatePicker
+>>>>>>> ba7f55e (addweatherpic)
 import java.util.Calendar
 
 private const val CONTENT_ANIMATION_DURATION = 300
