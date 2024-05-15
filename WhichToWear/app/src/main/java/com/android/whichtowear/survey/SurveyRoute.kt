@@ -18,12 +18,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.fragment.app.FragmentManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-<<<<<<< HEAD
+import com.android.whichtowear.db.entity.Clothing
+//<<<<<<< HEAD
 import com.android.whichtowear.ui.ImageColorPickerScreen
-import com.google.android.material.datepicker.MaterialDatePicker
-=======
 //import com.google.android.material.datepicker.MaterialDatePicker
->>>>>>> ba7f55e (addweatherpic)
+//=======
+//import com.google.android.material.datepicker.MaterialDatePicker
+//>>>>>>> ba7f55e (addweatherpic)
 import java.util.Calendar
 
 private const val CONTENT_ANIMATION_DURATION = 300
@@ -49,12 +50,18 @@ fun SurveyRoute(
     SurveyQuestionsScreen(
         surveyScreenData = surveyScreenData,
         isNextEnabled = viewModel.isNextEnabled,
+        cloth = Clothing(
+            image = viewModel.selfieUri.toString(),
+            type = viewModel.superheroResponse?.id?:0,
+            warmth = viewModel.feelingAboutSelfiesResponse?:0f,
+        ),
         onClosePressed = {
             onNavUp()
         },
         onPreviousPressed = { viewModel.onPreviousPressed() },
         onNextPressed = { viewModel.onNextPressed() },
-        onDonePressed = { viewModel.onDonePressed(onSurveyComplete) }
+        onDonePressed = { viewModel.onDonePressed(onSurveyComplete) },
+        addClothing = viewModel::addClothing,
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)

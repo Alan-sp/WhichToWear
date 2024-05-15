@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.db.repository.ClothingRespository
 import com.android.whichtowear.survey.question.Superhero
 import com.android.whichtowear.util.toClothingList
@@ -14,6 +15,7 @@ import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 const val simpleDateFormatPattern = "EEE, MMM d"
 
@@ -139,7 +141,18 @@ class SurveyViewModel @Inject constructor(
 
     fun addPhotos(photos: List<Uri?>) {
         viewModelScope.launch {
-            repository.InsertAll(photos.toClothingList())
+            repository.InsertAll(photos.toClothingList(
+                warmth = _feelingAboutSelfiesResponse.value?:0.0f,
+                type = _superheroResponse.value?.id?:1,
+            ))
+        }
+    }
+
+    fun addClothing(clothing: Clothing) {
+        viewModelScope.launch {
+            repository.InsertAll(
+                listOf(clothing)
+            )
         }
     }
 

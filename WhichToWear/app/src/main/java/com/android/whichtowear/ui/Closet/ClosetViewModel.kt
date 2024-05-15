@@ -43,9 +43,9 @@ class ClosetViewModel @Inject constructor(private val repository: ClothingRespos
         _TabUiState.value = newState
     }
 
-    fun addPhotos(photos: List<Uri>) {
-        viewModelScope.launch {
-            repository.InsertAll(photos.toClothingList())
-        }
-    }
+//    fun addPhotos(photos: List<Uri>) {
+//        viewModelScope.launch {
+//            repository.InsertAll(photos.toClothingList())
+//        }
+//    }
 }

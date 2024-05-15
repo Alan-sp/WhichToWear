@@ -47,10 +47,9 @@ fun SuperheroQuestion(
         titleResourceId = R.string.pick_superhero,
         directionsResourceId = R.string.select_one,
         possibleAnswers = listOf(
-            Superhero(R.string.spark, R.drawable.spark),
-            Superhero(R.string.lenz, R.drawable.lenz),
-            Superhero(R.string.bugchaos, R.drawable.bug_of_chaos),
-            Superhero(R.string.frag, R.drawable.frag),
+            Superhero(0,R.string.shirts, R.drawable.lenz),
+            Superhero(1,R.string.pants, R.drawable.bug_of_chaos),
+            Superhero(2,R.string.shoes, R.drawable.spark),
         ),
         selectedAnswer = selectedAnswer,
         onOptionSelected = onOptionSelected,

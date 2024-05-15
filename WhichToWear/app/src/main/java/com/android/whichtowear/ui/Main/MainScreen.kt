@@ -19,7 +19,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.ui.Closet.ClosetScreen
+import com.android.whichtowear.ui.Closet.ClosetUiState
 import com.android.whichtowear.ui.Closet.ClosetViewModel
 import com.android.whichtowear.ui.Main.nav.MainBottomNav
 import com.android.whichtowear.ui.Suit.SuitScreen
@@ -58,8 +60,9 @@ fun MainScreen(
             composable("closet")
             {
                 val viewModel = hiltViewModel<ClosetViewModel>()
-                val closetUiState by viewModel.uiState.collectAsState()
                 val tabState by viewModel.TabUiState.observeAsState()
+                val nowState by viewModel.uiState.collectAsState()
+                val closetUiState = getUiStates(nowState,tabState?:0)
                 tabState?.let { it1 ->
                     ClosetScreen(
                         uiState = closetUiState,
@@ -72,11 +75,14 @@ fun MainScreen(
             composable("suit")
             {
                 val viewModel = hiltViewModel<SuitViewModel>()
-//                val SuitUiState by viewModel.uiState.collectAsState()
+                val uiState by viewModel.uiState.collectAsState()
                 val weatherState by viewModel.weatherState.collectAsState()
                 SuitScreen(
+                    uiState = uiState,
                     weatherState = weatherState,
-                    changeWeatherState = viewModel::changeWeatherState
+                    changeWeatherState = viewModel::changeWeatherState,
+                    navigate = navigate,
+                    updatePhotos = viewModel::updatePhotos
                 )
             }
             composable("outfit")
@@ -85,5 +91,19 @@ fun MainScreen(
             }
         }
     }
-
+}
+fun getUiStates(
+    uiState: ClosetUiState,
+    tabUiState: Int
+):ClosetUiState
+{
+    if(uiState !is ClosetUiState.PhotoList)
+        return ClosetUiState.PhotoList(emptyList())
+    val resList = mutableListOf<Clothing>()
+    for(i in uiState.photos.indices)
+    {
+        if(uiState.photos[i].type == tabUiState)
+            resList.add(uiState.photos[i])
+    }
+    return ClosetUiState.PhotoList(resList)
 }

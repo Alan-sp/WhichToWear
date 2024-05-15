@@ -103,17 +103,19 @@ fun ClosetScreen(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         content = {
                             itemsIndexed(uiState.photos) { index, photo ->
-                                GlideImage(
-                                    model = photo.image,
-                                    contentScale = ContentScale.Crop,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .aspectRatio(1f / 1.6f)
-                                        .clip(shape = RoundedCornerShape(4.dp))
-                                        .clickable {
-                                            navigate("detail/${photo.id}")
-                                        }
-                                )
+                                if(photo.type == TabUiState) {
+                                    GlideImage(
+                                        model = photo.image,
+                                        contentScale = ContentScale.Crop,
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .aspectRatio(1f / 1.6f)
+                                            .clip(shape = RoundedCornerShape(4.dp))
+                                            .clickable {
+                                                navigate("detail/${photo.id}")
+                                            }
+                                    )
+                                }
                             }
                         },
                         modifier = Modifier.fillMaxSize()

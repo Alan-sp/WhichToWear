@@ -51,6 +51,9 @@
     <string name="strongly_dislike">Strongly\nDislike</string>
     <string name="strongly_like">Strongly\nLike</string>
     <string name="neutral">Neutral</string>
+    <string name="shoes">鞋子</string>
+    <string name="shirts">上衣</string>
+    <string name="pants">裤子</string>
 
     <item name="Clear" type="drawable">@drawable/vector_android_ic_clear_day</item>
     <item name="Clouds" type="drawable">@drawable/vector_drawable_ic_cloudy</item>

@@ -42,12 +42,19 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -63,7 +70,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.core.app.ActivityCompat
+import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.retro.data.Weather
+import com.android.whichtowear.ui.Closet.ClosetUiState
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import java.util.*
 
@@ -81,11 +91,14 @@ private fun getLocationCityName(context: Context,location: Location?): String {
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "DiscouragedApi")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun SuitScreen(
+    uiState: ClosetUiState,
     weatherState: Weather,
-    changeWeatherState:(Location) -> Unit
+    changeWeatherState:(Location) -> Unit,
+    updatePhotos: (List<Clothing>) -> Unit,
+    navigate: (String) -> Unit
 ) {
     var weatherInfo by remember { mutableStateOf(
         "\"City: ${weatherState.main}, Country: ${weatherState.country}\\nWeather: ${weatherState.info}, Temperature: ${weatherState.temp - 273.15}°C\""
@@ -143,30 +156,8 @@ fun SuitScreen(
         Box(
             modifier = Modifier
                 .padding(it)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 30.dp)
         ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(4.dp)
-            ) {
-                Column(modifier = Modifier.padding(vertical = 16.dp)) {
-                    Column {
-                        Box(modifier = Modifier.size(16.dp))
-                        Text(
-                            text = "${(weatherState.temp- 273.15).toInt()} Degree",
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text =  weatherState.info,
-                        )
-                        Icon(
-                            painter = painterResource(id = resID),
-                            contentDescription = null
-                        )
-                    }
-                    Box(modifier = Modifier.size(16.dp))
-                }
-            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -174,11 +165,39 @@ fun SuitScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(vertical = 16.dp)) {
+                        Column {
+                            Box(modifier = Modifier.size(16.dp))
+                            Text(
+                                text = "${(weatherState.temp- 273.15).toInt()} Degree",
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text =  weatherState.info,
+                            )
+                            Icon(
+                                painter = painterResource(id = resID),
+                                contentDescription = null,
+                                tint = Color.Black,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                            )
+                        }
+                        Box(modifier = Modifier.size(16.dp))
+                    }
+                }
                 Button(onClick = {
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                     cityName = getLocationCityName(context, location) ?: "Unknown"
 //                    Log.d("CityName", "${location!!.latitude}")
                     location?.let { it1 -> changeWeatherState(it1) }
+                    updatePhotos(selectPhotos(uiState as ClosetUiState.PhotoList))
 //                    fetchWeather(cityName!!) {
 //                        weatherInfo = it
 //                    }
@@ -194,7 +213,50 @@ fun SuitScreen(
 //                    text = weatherInfo,
                     fontSize = 20.sp,
                 )
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    if(uiState is ClosetUiState.PhotoList) {
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(minSize = 80.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            content = {
+                                itemsIndexed(uiState.photos) { index, photo ->
+                                    GlideImage(
+                                        model = photo.image,
+                                        contentScale = ContentScale.Crop,
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .aspectRatio(1f / 1.6f)
+                                            .clip(shape = RoundedCornerShape(4.dp))
+                                            .clickable {
+                                                navigate("detail/${photo.id}")
+                                            }
+                                    )
+                                }
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
             }
         }
     }
+}
+
+fun selectPhotos(
+    uiState: ClosetUiState.PhotoList
+):List<Clothing>
+{
+    val resList = mutableListOf<Clothing>()
+//    val
+    for(i in uiState.photos.indices)
+    {
+        if(i%2 != 0)
+            resList.add(uiState.photos[i])
+    }
+    return resList
 }

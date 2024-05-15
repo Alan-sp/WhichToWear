@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.whichtowear.R
+import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.ui.theme.stronglyDeemphasizedAlpha
 import com.android.whichtowear.util.supportWideScreen
 
@@ -43,10 +44,12 @@ import com.android.whichtowear.util.supportWideScreen
 fun SurveyQuestionsScreen(
     surveyScreenData: SurveyScreenData,
     isNextEnabled: Boolean,
+    cloth:Clothing,
     onClosePressed: () -> Unit,
     onPreviousPressed: () -> Unit,
     onNextPressed: () -> Unit,
     onDonePressed: () -> Unit,
+    addClothing: (Clothing) -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
 
@@ -62,6 +65,8 @@ fun SurveyQuestionsScreen(
             content = content,
             bottomBar = {
                 SurveyBottomBar(
+                    cloth = cloth,
+                    addClothing = addClothing,
                     shouldShowPreviousButton = surveyScreenData.shouldShowPreviousButton,
                     shouldShowDoneButton = surveyScreenData.shouldShowDoneButton,
                     isNextButtonEnabled = isNextEnabled,
@@ -199,6 +204,8 @@ fun SurveyTopAppBar(
 
 @Composable
 fun SurveyBottomBar(
+    cloth:Clothing,
+    addClothing: (Clothing) -> Unit,
     shouldShowPreviousButton: Boolean,
     shouldShowDoneButton: Boolean,
     isNextButtonEnabled: Boolean,
@@ -232,7 +239,11 @@ fun SurveyBottomBar(
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
-                    onClick = onDonePressed,
+                    onClick =
+                    {
+                        addClothing(cloth)
+                        onDonePressed()
+                    },
                     //enabled = isNextButtonEnabled,
                 ) {
                     Text(text = stringResource(id = R.string.done))

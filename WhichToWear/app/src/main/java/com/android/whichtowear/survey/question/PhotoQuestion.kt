@@ -65,7 +65,7 @@ fun PhotoQuestion(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
             onPhotoTaken(uris[0])
-            addPhotos(uris)
+//            addPhotos(uris)
         } else {
             Timber.d("No media selected")
         }
@@ -83,7 +83,7 @@ fun PhotoQuestion(
         onResult = { success ->
             if (success) {
                 onPhotoTaken(newImageUri!!)
-                addPhotos(listOf(newImageUri))
+//                addPhotos(listOf(newImageUri))
             }
         }
     )
