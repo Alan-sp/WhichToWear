@@ -77,17 +77,17 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import java.util.*
 
-@SuppressLint("MissingPermission")
-private fun getLocationCityName(context: Context,location: Location?): String {
-    val geocoder = Geocoder(context, Locale.getDefault())
-    location?.let {
-        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-        if (addresses!!.isNotEmpty()) {
-            return addresses[0].locality
-        }
-    }
-    return "Unknown" + "${location?.latitude},${location?.longitude}"
-}
+//@SuppressLint("MissingPermission")
+//private fun getLocationCityName(context: Context,location: Location?): String {
+//    val geocoder = Geocoder(context, Locale.getDefault())
+//    location?.let {
+//        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+//        if (addresses!!.isNotEmpty()) {
+//            return addresses[0].locality
+//        }
+//    }
+//    return "Unknown" + "${location?.latitude},${location?.longitude}"
+//}
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "DiscouragedApi")
@@ -114,7 +114,7 @@ fun SuitScreen(
     val locationListener = object : LocationListener {
         override fun onLocationChanged(loc: Location) {
             location = loc
-            cityName = getLocationCityName(context,loc)
+//            cityName = getLocationCityName(context,loc)
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -194,7 +194,7 @@ fun SuitScreen(
                 }
                 Button(onClick = {
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                    cityName = getLocationCityName(context, location) ?: "Unknown"
+//                    cityName = getLocationCityName(context, location) ?: "Unknown"
 //                    Log.d("CityName", "${location!!.latitude}")
                     location?.let { it1 -> changeWeatherState(it1) }
                     updatePhotos(selectPhotos(uiState as ClosetUiState.PhotoList))

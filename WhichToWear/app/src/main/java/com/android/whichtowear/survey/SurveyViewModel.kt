@@ -28,8 +28,8 @@ class SurveyViewModel @Inject constructor(
     private val questionOrder: List<SurveyQuestion> = listOf(
         SurveyQuestion.TAKE_SELFIE,
         SurveyQuestion.PICK_COLOR,
-        SurveyQuestion.FREE_TIME,
         SurveyQuestion.SUPERHERO,
+        SurveyQuestion.FREE_TIME,
         SurveyQuestion.LAST_TAKEAWAY,
         SurveyQuestion.HOT_AND_COLD,
     )

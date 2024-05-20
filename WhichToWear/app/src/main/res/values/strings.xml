@@ -10,28 +10,28 @@
 
     <!-- survey-->
     <string name="question_count">\u00A0of %d</string>
-    <string name="select_one">Select one.</string>
-    <string name="select_all">Select all that apply.</string>
-    <string name="select_date">Select date.</string>
+    <string name="select_one">请选择其中一项</string>
+    <string name="select_all">请选择所有满足要求的选项</string>
+    <string name="select_date">请选择购入日期</string>
 
     <!-- question 1-->
-    <string name="in_my_free_time">In my free time I like to …</string>
-    <string name="read">Read</string>
-    <string name="work_out">Work out</string>
-    <string name="draw">Draw</string>
-    <string name="play_games">Play video games</string>
-    <string name="dance">Dance</string>
-    <string name="watch_movies">Watch movies</string>
+    <string name="in_my_free_time">这件衣服的特性有：</string>
+    <string name="read">运动型</string>
+    <string name="work_out">休闲型</string>
+    <string name="draw">防雨/防风</string>
+    <string name="play_games">颜色亮丽/图案花哨</string>
+    <string name="dance">朴素简约</string>
+    <string name="watch_movies">正装</string>
 
     <!-- question 2 -->
-    <string name="pick_superhero">Pick a Compose comic character</string>
+    <string name="pick_superhero">请选择这件衣服的属性</string>
     <string name="spark">Spark</string>
     <string name="lenz">Lenz</string>
     <string name="bugchaos">Bug of Chaos</string>
     <string name="frag">Frag</string>
 
     <!-- question 3  -->
-    <string name="takeaway">When was the last time you ordered takeaway because you couldn\'t be bothered to cook?</string>
+    <string name="takeaway">请选择购入这件衣服的具体日期</string>
 
     <!-- question 4  -->
     <string name="HotAndCold">Hot or Cold</string>

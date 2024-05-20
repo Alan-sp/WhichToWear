@@ -71,17 +71,17 @@ fun HomeScreen()
         composable("survey"){
             SurveyRoute(
                 onSurveyComplete = {
-                    navController.navigate("surveyresults")
+                    navController.navigate("main")
                 },
                 onNavUp = navController::navigateUp,
             )
         }
 
-        composable("surveyresults") {
-            SurveyResultScreen{
-                navController.popBackStack("main", false)
-            }
-        }
+//        composable("surveyresults") {
+//            SurveyResultScreen{
+//                navController.popBackStack("main", false)
+//            }
+//        }
 
         composable(
             "detail/{clothId}",

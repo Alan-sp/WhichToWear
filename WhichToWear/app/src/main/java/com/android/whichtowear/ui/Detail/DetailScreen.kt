@@ -1,4 +1,4 @@
-package com.android.whichtowear.ui.Detail
+ package com.android.whichtowear.ui.Detail
 
 import android.content.Context
 import android.widget.Toast
