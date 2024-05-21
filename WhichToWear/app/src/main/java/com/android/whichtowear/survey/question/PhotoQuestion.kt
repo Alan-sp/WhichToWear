@@ -50,7 +50,6 @@ fun PhotoQuestion(
     imageUri: Uri?,
     getNewImageUri: () -> Uri,
     onPhotoTaken: (Uri) -> Unit,
-    addPhotos: (List<Uri?>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -153,9 +152,9 @@ fun PhotoQuestion(
                 Text(
                     text = stringResource(
                         id = if (hasPhoto) {
-                            R.string.retake_photo
+                            R.string.rechoose_photo
                         } else {
-                            R.string.add_photo
+                            R.string.choose_photo
                         }
                     )
                 )
@@ -192,7 +191,7 @@ fun PhotoQuestionPreview() {
                 imageUri = Uri.parse("https://example.bogus/wow"),
                 getNewImageUri = { Uri.EMPTY },
                 onPhotoTaken = {},
-                addPhotos = {},
+//                addPhotos = {},
                 modifier = Modifier.padding(16.dp),
             )
         }

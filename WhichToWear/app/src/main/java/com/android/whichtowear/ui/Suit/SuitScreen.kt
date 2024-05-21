@@ -41,11 +41,13 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -63,10 +65,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.R
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.core.app.ActivityCompat
@@ -95,6 +102,7 @@ import java.util.*
 @Composable
 fun SuitScreen(
     uiState: ClosetUiState,
+    allState: ClosetUiState,
     weatherState: Weather,
     changeWeatherState:(Location) -> Unit,
     updatePhotos: (List<Clothing>) -> Unit,
@@ -108,7 +116,6 @@ fun SuitScreen(
     var location by remember { mutableStateOf<Location?>(null) }
     var cityName by remember { mutableStateOf<String?>(null) }
     val resID = context.resources.getIdentifier(weatherState.icon, "drawable", "com.android.whichtowear")
-
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     val locationListener = object : LocationListener {
@@ -148,15 +155,29 @@ fun SuitScreen(
             locationListener
         )
     }
+
+    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+//                    cityName = getLocationCityName(context, location) ?: "Unknown"
+//                    Log.d("CityName", "${location!!.latitude}")
+    location?.let { it1 -> changeWeatherState(it1) }
+
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "xx市") })
+            TopAppBar(title = { Text(text = "搭配") })
         },
     ) {
         Box(
             modifier = Modifier
                 .padding(it)
                 .padding(horizontal = 30.dp)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.background,
+                            Color.White
+                        )
+                    )
+                )
         ) {
             Column(
                 modifier = Modifier
@@ -165,39 +186,36 @@ fun SuitScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(vertical = 16.dp)) {
-                        Column {
-                            Box(modifier = Modifier.size(16.dp))
-                            Text(
-                                text = "${(weatherState.temp- 273.15).toInt()} Degree",
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text =  weatherState.info,
-                            )
-                            Icon(
-                                painter = painterResource(id = resID),
-                                contentDescription = null,
-                                tint = Color.Black,
-                                modifier = Modifier
-                                    .fillMaxWidth()
+                Column(modifier = Modifier.padding(vertical = 16.dp)) {
+                    Column {
+//                        Box(modifier = Modifier.size(16.dp))
+                        Text(
+                            text = weatherState.info + "   ${(weatherState.temp- 273.15).toInt()} ℃",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 40.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
                                 .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
-                            )
-                        }
-                        Box(modifier = Modifier.size(16.dp))
+                        )
+                        Image(
+                            painter = painterResource(id = resID),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                            .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                            .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                        )
                     }
+                    Box(modifier = Modifier.size(16.dp))
                 }
+//                Card(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    shape = RoundedCornerShape(4.dp)
+//                ) {
+//                }
                 Button(onClick = {
-                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-//                    cityName = getLocationCityName(context, location) ?: "Unknown"
-//                    Log.d("CityName", "${location!!.latitude}")
-                    location?.let { it1 -> changeWeatherState(it1) }
-                    updatePhotos(selectPhotos(uiState as ClosetUiState.PhotoList))
+                    updatePhotos(selectPhotos(allState as ClosetUiState.PhotoList))
 //                    fetchWeather(cityName!!) {
 //                        weatherInfo = it
 //                    }
@@ -232,9 +250,6 @@ fun SuitScreen(
                                         modifier = Modifier
                                             .aspectRatio(1f / 1.6f)
                                             .clip(shape = RoundedCornerShape(4.dp))
-                                            .clickable {
-                                                navigate("detail/${photo.id}")
-                                            }
                                     )
                                 }
                             },

@@ -6,17 +6,18 @@ import com.android.whichtowear.db.entity.Clothing
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-fun List<Uri?>.toClothingList(
-    warmth: Float,
-    type: Int
-) = run {
-    map {
-        Clothing(
-            image = it.toString(),
-            warmth = warmth,
-            type = type)
-    }
-}
+//fun List<Uri?>.toClothingList(
+//    warmth: Float,
+//    type: Int
+//) = run {
+//    map {
+//        Clothing(
+//            image = it.toString(),
+//            warmth = warmth,
+//            type = type,
+//        )
+//    }
+//}
 
 //fun List<Outfit>.groupByTimestamp() = run {
 //    this.groupBy {
@@ -35,4 +36,12 @@ fun getDateFromTimeStamp(timestamp: Long): String {
 fun getFormattedDateFromLocalDate(localDate: LocalDate): String {
     val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
     return formatter.format(localDate)
+}
+
+fun hashList(list: List<Int>): Int {
+    var result = 0
+    for (element in list) {
+        result += (1.shl(element))
+    }
+    return result
 }

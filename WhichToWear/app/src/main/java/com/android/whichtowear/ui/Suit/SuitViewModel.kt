@@ -2,6 +2,9 @@ package com.android.whichtowear.ui.Suit
 
 import android.location.Location
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +14,7 @@ import com.android.whichtowear.retro.data.Weather
 import com.android.whichtowear.retro.repository.WeatherRepository
 import com.android.whichtowear.ui.Closet.ClosetUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,13 +35,15 @@ class SuitViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ClosetUiState>(ClosetUiState.PhotoList(emptyList()))
     val uiState: StateFlow<ClosetUiState> = _uiState
 
-//    init {
-//        viewModelScope.launch {
-//            clothingRespository.GetAll().collect {
-//                updateState(ClosetUiState.PhotoList(it))
-//            }
-//        }
-//    }
+    private val _allState = MutableStateFlow<ClosetUiState>(ClosetUiState.PhotoList(emptyList()))
+    val allState: StateFlow<ClosetUiState> = _allState
+    init {
+        viewModelScope.launch {
+            clothingRespository.GetAll().collect {
+                updateAllState(ClosetUiState.PhotoList(it))
+            }
+        }
+    }
     fun changeWeatherState(location: Location)
     {
 //        thread{
@@ -62,7 +68,14 @@ class SuitViewModel @Inject constructor(
         _uiState.value = newState
     }
 
+    private fun updateAllState(newState: ClosetUiState) {
+        _allState.value = newState
+    }
 
+    fun getAll() : Flow<List<Clothing>>
+    {
+        return clothingRespository.GetAll()
+    }
 
     fun updatePhotos(photos: List<Clothing>) {
         _uiState.value = ClosetUiState.PhotoList(photos)

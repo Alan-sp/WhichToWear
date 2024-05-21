@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.whichtowear.db.entity.Clothing
 //<<<<<<< HEAD
 import com.android.whichtowear.ui.ImageColorPickerScreen
+import com.android.whichtowear.util.hashList
 //import com.google.android.material.datepicker.MaterialDatePicker
 //=======
 //import com.google.android.material.datepicker.MaterialDatePicker
@@ -54,6 +55,8 @@ fun SurveyRoute(
             image = viewModel.selfieUri.toString(),
             type = viewModel.superheroResponse?.id?:0,
             warmth = viewModel.feelingAboutSelfiesResponse?:0f,
+            date = viewModel.takeawayResponse?:0,
+            points = hashList(viewModel.freeTimeResponse),
         ),
         onClosePressed = {
             onNavUp()
@@ -143,7 +146,6 @@ fun SurveyRoute(
                     imageUri = viewModel.selfieUri,
                     getNewImageUri = viewModel::getNewSelfieUri,
                     onPhotoTaken = viewModel::onSelfieResponse,
-                    addPhotos = viewModel::addPhotos,
                     modifier = modifier,
                 )
 

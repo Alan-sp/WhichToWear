@@ -18,8 +18,10 @@
     <string name="in_my_free_time">这件衣服的特性有：</string>
     <string name="read">运动型</string>
     <string name="work_out">休闲型</string>
-    <string name="draw">防雨/防风</string>
-    <string name="play_games">颜色亮丽/图案花哨</string>
+    <string name="draw">防雨</string>
+    <string name="wind">防风</string>
+    <string name="air">透气</string>
+    <string name="play_games">图案花哨</string>
     <string name="dance">朴素简约</string>
     <string name="watch_movies">正装</string>
 
@@ -40,9 +42,12 @@
     <string name="Medium">Medium</string>
 
     <!-- question 5-->
-    <string name="selfie_skills">Show off your selfie skills!</string>
-    <string name="add_photo">ADD PHOTO</string>
-    <string name="retake_photo">RETAKE PHOTO</string>
+    <string name="selfie_skills">拍摄或选择一张衣服的照片</string>
+    <string name="add_photo">拍摄照片</string>
+    <string name="retake_photo">重新拍摄</string>
+    <string name="choose_photo">从相册选择</string>
+    <string name="rechoose_photo">重新选择</string>
+
 
     <string name="survey_result_title">Compose</string>
     <string name="survey_result_subtitle">Congratulations, you are Compose</string>

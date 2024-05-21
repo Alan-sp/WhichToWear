@@ -36,6 +36,8 @@ fun MainScreen(
 {
     val navController:NavHostController = rememberNavController()
     var navBarVisible by remember { mutableStateOf(true) }
+    val closetViewModel = hiltViewModel<ClosetViewModel>()
+    val viewModel = hiltViewModel<SuitViewModel>()
 
     Scaffold (
         bottomBar = {
@@ -59,30 +61,30 @@ fun MainScreen(
         ){
             composable("closet")
             {
-                val viewModel = hiltViewModel<ClosetViewModel>()
-                val tabState by viewModel.TabUiState.observeAsState()
-                val nowState by viewModel.uiState.collectAsState()
+                val tabState by closetViewModel.TabUiState.observeAsState()
+                val nowState by closetViewModel.uiState.collectAsState()
                 val closetUiState = getUiStates(nowState,tabState?:0)
                 tabState?.let { it1 ->
                     ClosetScreen(
                         uiState = closetUiState,
                         TabUiState = it1,
-                        changeTabUiState = viewModel::changeTabUiState,
+                        changeTabUiState = closetViewModel::changeTabUiState,
                         navigate = navigate
                     )
                 }
             }
             composable("suit")
             {
-                val viewModel = hiltViewModel<SuitViewModel>()
                 val uiState by viewModel.uiState.collectAsState()
                 val weatherState by viewModel.weatherState.collectAsState()
+                val allState by viewModel.allState.collectAsState()
                 SuitScreen(
                     uiState = uiState,
+                    allState = allState,
                     weatherState = weatherState,
                     changeWeatherState = viewModel::changeWeatherState,
                     navigate = navigate,
-                    updatePhotos = viewModel::updatePhotos
+                    updatePhotos = viewModel::updatePhotos,
                 )
             }
             composable("outfit")

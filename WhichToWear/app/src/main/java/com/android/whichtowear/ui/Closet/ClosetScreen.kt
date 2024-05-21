@@ -77,7 +77,7 @@ fun ClosetScreen(
                     onClick = {
                         navigate("survey")
                     },
-                    text = { Text("Clothes") },
+                    text = { Text("添加衣服r") },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Add,
@@ -125,13 +125,13 @@ fun ClosetScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Your closet looks empty!", fontSize = 14.sp)
+                        Text(text = "这里什么都没有，快去添加衣服吧", fontSize = 20.sp)
                         Box(modifier = Modifier.height(16.dp))
                         ExtendedFloatingActionButton(
                             onClick = {
                                 navigate("survey")
                             },
-                            text = { Text("Clothes") },
+                            text = { Text("添加衣服") },
                             icon = {
                                 Icon(
                                     imageVector = Icons.Filled.Add,

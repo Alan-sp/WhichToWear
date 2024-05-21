@@ -37,25 +37,6 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             val clothing = detailRepository.get(clothingId)
             updateState(DetailUiState.OpenDetail(clothing))
-//            detailRepository.getLaundry(clothingId).collect { laundryList ->
-//                if (laundryList.isNotEmpty())
-//                    _uiState.update { state ->
-//                        when (state) {
-//                            is DetailUiState.OpenDetail -> {
-//                                val clo = state.clothing
-//                                val laundryCount = laundryList.size
-//                                val lastLaundryDate = laundryList.last().timestamp
-//                                state.copy(
-//                                    clothing = clo,
-//                                    laundryCount = laundryCount,
-//                                    lastLaundryDate = lastLaundryDate
-//                                )
-//                            }
-//
-//                            is DetailUiState.Error -> state
-//                        }
-//                    }
-//            }
         }
     }
 

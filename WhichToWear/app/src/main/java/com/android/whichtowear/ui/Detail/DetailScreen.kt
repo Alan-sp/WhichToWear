@@ -1,11 +1,14 @@
  package com.android.whichtowear.ui.Detail
 
 import android.content.Context
+import android.service.autofill.OnClickAction
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,8 +19,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,19 +46,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.whichtowear.R
 import com.android.whichtowear.db.entity.Clothing
+import com.android.whichtowear.util.getDateFormat
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import kotlinx.coroutines.launch
+import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class)
+ @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     uiState: DetailUiState,
-    //addToOutfit: (clothing: Clothing, () -> Unit) -> Unit,
-    //addToLaundry: (() -> Unit) -> Unit,
     delete: (() -> Unit) -> Unit,
     popBackStack: () -> Unit
 ) {
@@ -62,7 +72,7 @@ fun DetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Detail") },
+                title = { Text(text = "详细信息") },
                 navigationIcon = {
                     IconButton(onClick = { popBackStack() }) {
                         Icon(
@@ -82,7 +92,7 @@ fun DetailScreen(
         },
         bottomBar = {
             if (uiState is DetailUiState.OpenDetail)
-                DetailScreenBottomAppBar(context, uiState.clothing,)//addToOutfit, addToLaundry)
+                DetailScreenBottomAppBar(context, uiState.clothing,)
         }
     ) { innerPadding ->
         Box(
@@ -102,15 +112,32 @@ fun DetailScreen(
                         image = clothing.image
                     )
                     Box(modifier = Modifier.height(16.dp))
-//
-//                    if (uiState.laundryCount != null && uiState.laundryCount > 0) {
-//                        Box(modifier = Modifier.height(16.dp))
-//                        DetailScreenLaundry(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            laundryCount = uiState.laundryCount,
-//                            lastLaundryDate = uiState.lastLaundryDate
-//                        )
-//                    }
+                    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(4.dp)) {
+                        Row(modifier = Modifier.padding(16.dp)) {
+                            Column(
+                                modifier = Modifier.weight(1f),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = getPoints(clothing),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
+                                Text(text = "特性", fontSize = 12.sp)
+                            }
+                            Column(
+                                modifier = Modifier.weight(1f),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = getDateFormat(clothing.date),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
+                                Text(text = "购入时间", fontSize = 12.sp)
+                            }
+                        }
+                    }
                 }
             } else {
                 Text(text = "Detail Error")
@@ -126,7 +153,7 @@ fun DetailScreen(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(text = "Delete? It will be removed from outfits too.")
+                    Text(text = "确定要删除这件衣服吗？")
                     Box(modifier = Modifier.height(16.dp))
                     TextButton(
                         onClick = {
@@ -137,7 +164,7 @@ fun DetailScreen(
                             }
                             delete {
                                 popBackStack()
-                                Toast.makeText(context, "Clothing Deleted", Toast.LENGTH_SHORT)
+                                Toast.makeText(context, "已完成删除", Toast.LENGTH_SHORT)
                                     .show()
                             }
                         },
@@ -157,17 +184,13 @@ fun DetailScreen(
 fun DetailScreenBottomAppBar(
     context: Context,
     clothing: Clothing,
-    //addToOutfit: (clothing: Clothing, () -> Unit) -> Unit,
-    //addToLaundry: (() -> Unit) -> Unit
 ) {
     BottomAppBar(
         actions = {
-//            FilledTonalButton(onClick = {
-//                addToOutfit(clothing) {
-//                    Toast.makeText(context, "Added to outfit", Toast.LENGTH_SHORT)
-//                        .show()
+//            FilledTonalButton(
+//                onClick = {
 //                }
-//            }) {
+//            ) {
 //                Icon(
 //                    painter = painterResource(id = R.drawable.closet),
 //                    contentDescription = "Add to outfit"
@@ -176,12 +199,9 @@ fun DetailScreenBottomAppBar(
 //                Text(text = "Add to outfit")
 //            }
 //            Box(modifier = Modifier.width(16.dp))
-//            FilledTonalButton(onClick = {
-//                addToLaundry() {
-//                    Toast.makeText(context, "Added to laundry", Toast.LENGTH_SHORT)
-//                        .show()
+//            FilledTonalButton(
+//                onClick = {
 //                }
-//            }
 //            ) {
 //                Icon(
 //                    painter = painterResource(id = R.drawable.laundry),
@@ -191,7 +211,7 @@ fun DetailScreenBottomAppBar(
 //                Text(text = "Add to laundry")
 //            }
         },
-
+//
 //        floatingActionButton = {
 //            ExtendedFloatingActionButton(
 //                expanded = false,
@@ -226,35 +246,61 @@ private fun DetailScreenImage(modifier: Modifier = Modifier, image: String) {
         )
 }
 
-//@Composable
-//private fun DetailScreenLaundry(modifier: Modifier, laundryCount: Int, lastLaundryDate: Long?) {
-//    val mLastLaundryDate =
-//        if (lastLaundryDate != null) getDateFromTimeStamp(lastLaundryDate) else ""
-//    Card(modifier = modifier, shape = RoundedCornerShape(4.dp)) {
-//        Row(modifier = Modifier.padding(16.dp)) {
-//            Column(
-//                modifier = Modifier.weight(1f),
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ) {
-//                Text(
-//                    text = laundryCount.toString(),
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 16.sp
-//                )
-//                Text(text = "Total Laundry", fontSize = 12.sp)
-//            }
-//            Column(
-//                modifier = Modifier.weight(1f),
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ) {
-//                Text(
-//                    text = mLastLaundryDate,
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 16.sp
-//                )
-//                Text(text = "Last Laundry", fontSize = 12.sp)
-//            }
-//        }
-//    }
-//}
-
+fun getPoints(clothing: Clothing):String
+{
+    var points = ""
+    Log.d("DEBUG",clothing.points.toString())
+    if(clothing.points.and(1) == 1)
+    {
+        points += R.string.read
+    }
+    if(clothing.points.and(2) == 2)
+    {
+        if(points.isNotEmpty())
+        {
+            points += "、"
+        }
+        points += R.string.work_out
+    }
+    if(clothing.points.and(4) == 4)
+    {
+        if(points.isNotEmpty())
+        {
+            points += "、"
+        }
+        points += R.string.draw
+    }
+    if(clothing.points.and(8) == 8)
+    {
+        if(points.isNotEmpty())
+        {
+            points += "、"
+        }
+        points += R.string.wind
+    }
+    if(clothing.points.and(16) == 16)
+    {
+        if(points.isNotEmpty())
+        {
+            points += "、"
+        }
+        points += R.string.play_games
+    }
+    if(clothing.points.and(32) == 32)
+    {
+        if(points.isNotEmpty())
+        {
+            points += "、"
+        }
+        points += R.string.dance
+    }
+    if(clothing.points.and(64) == 64)
+    {
+        if(points.isNotEmpty())
+        {
+            points += "、"
+        }
+        points += R.string.watch_movies
+    }
+    return points
+}

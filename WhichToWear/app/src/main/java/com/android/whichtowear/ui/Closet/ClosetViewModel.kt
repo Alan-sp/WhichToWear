@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.whichtowear.util.toClothingList
+//import com.android.whichtowear.util.toClothingList
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.db.repository.ClothingRespository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,10 +42,4 @@ class ClosetViewModel @Inject constructor(private val repository: ClothingRespos
     fun changeTabUiState(newState: Int){
         _TabUiState.value = newState
     }
-
-//    fun addPhotos(photos: List<Uri>) {
-//        viewModelScope.launch {
-//            repository.InsertAll(photos.toClothingList())
-//        }
-//    }
 }

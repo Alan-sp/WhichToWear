@@ -7,7 +7,7 @@ import com.android.whichtowear.db.entity.Clothing
 
 @Database(
     entities = [Clothing::class],
-    version = 1
+    version = 2
 )
 abstract class ClothingDatabase:RoomDatabase() {
     abstract fun clothingDao(): ClothingDao

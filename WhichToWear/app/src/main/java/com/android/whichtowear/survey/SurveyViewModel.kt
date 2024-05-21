@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.db.repository.ClothingRespository
 import com.android.whichtowear.survey.question.Superhero
-import com.android.whichtowear.util.toClothingList
+//import com.android.whichtowear.util.toClothingList
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -139,14 +139,14 @@ class SurveyViewModel @Inject constructor(
         _isNextEnabled.value = getIsNextEnabled()
     }
 
-    fun addPhotos(photos: List<Uri?>) {
-        viewModelScope.launch {
-            repository.InsertAll(photos.toClothingList(
-                warmth = _feelingAboutSelfiesResponse.value?:0.0f,
-                type = _superheroResponse.value?.id?:1,
-            ))
-        }
-    }
+//    fun addPhotos(photos: List<Uri?>) {
+//        viewModelScope.launch {
+//            repository.InsertAll(photos.toClothingList(
+//                warmth = _feelingAboutSelfiesResponse.value?:0.0f,
+//                type = _superheroResponse.value?.id?:1,
+//            ))
+//        }
+//    }
 
     fun addClothing(clothing: Clothing) {
         viewModelScope.launch {

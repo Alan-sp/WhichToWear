@@ -27,6 +27,7 @@ fun FreeTimeQuestion(
             R.string.read,
             R.string.work_out,
             R.string.draw,
+            R.string.wind,
             R.string.play_games,
             R.string.dance,
             R.string.watch_movies,
@@ -93,7 +94,6 @@ fun TakeSelfieQuestion(
     imageUri: Uri?,
     getNewImageUri: () -> Uri,
     onPhotoTaken: (Uri) -> Unit,
-    addPhotos : (List<Uri?>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PhotoQuestion(
@@ -101,7 +101,6 @@ fun TakeSelfieQuestion(
         imageUri = imageUri,
         getNewImageUri = getNewImageUri,
         onPhotoTaken = onPhotoTaken,
-        addPhotos = addPhotos,
         modifier = modifier,
     )
 }
