@@ -80,36 +80,6 @@ fun SurveyQuestionsScreen(
 }
 
 @Composable
-fun SurveyResultScreen(
-    onDonePressed: () -> Unit,
-) {
-
-    Surface(modifier = Modifier.supportWideScreen()) {
-        Scaffold(
-            content = { innerPadding ->
-                val modifier = Modifier.padding(innerPadding)
-                SurveyResult(
-                    title = stringResource(R.string.survey_result_title),
-                    subtitle = stringResource(R.string.survey_result_subtitle),
-                    description = stringResource(R.string.survey_result_description),
-                    modifier = modifier
-                )
-            },
-            bottomBar = {
-                OutlinedButton(
-                    onClick = onDonePressed,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 24.dp)
-                ) {
-                    Text(text = stringResource(id = R.string.done))
-                }
-            }
-        )
-    }
-}
-
-@Composable
 private fun SurveyResult(
     title: String,
     subtitle: String,

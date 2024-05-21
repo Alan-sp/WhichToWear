@@ -1,11 +1,6 @@
 package com.android.whichtowear.ui.Suit
 
 import android.location.Location
-import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
@@ -20,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import javax.inject.Inject
-import kotlin.concurrent.thread
 
 //import com.android.whichtowear.retro.data.Weather
 @HiltViewModel
@@ -58,8 +52,10 @@ class SuitViewModel @Inject constructor(
                 val temperature = json.getJSONObject("main").getDouble("temp")
                 val country = json.getJSONObject("sys").getString("country")
                 val city = json.getString("name")
+                val wind = json.getJSONObject("wind").getDouble("speed")
+                val wet = json.getJSONObject("main").getInt("humidity")
                 val icon = json.getJSONArray("weather").getJSONObject(0).getString("main")
-                _weatherState.value = Weather(temperature, weather, city , country, 0,icon)
+                _weatherState.value = Weather(temperature, weather, city , country, wet , wind ,icon)
             }
 //        }
     }

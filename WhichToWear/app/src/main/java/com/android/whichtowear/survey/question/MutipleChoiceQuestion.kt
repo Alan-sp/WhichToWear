@@ -37,13 +37,13 @@ fun MultipleChoiceQuestion(
         titleResourceId = titleResourceId,
         directionsResourceId = directionsResourceId,
     ) {
-        possibleAnswers.forEach {
-            val selected = selectedAnswers.contains(it)
+        possibleAnswers.forEachIndexed() { index,it ->
+            val selected = selectedAnswers.contains(index)
             CheckboxRow(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(id = it),
                 selected = selected,
-                onOptionSelected = { onOptionSelected(!selected, it) }
+                onOptionSelected = { onOptionSelected(!selected, index) }
             )
         }
     }

@@ -62,6 +62,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.R
 import androidx.compose.ui.draw.clip
@@ -117,6 +118,8 @@ fun SuitScreen(
     var cityName by remember { mutableStateOf<String?>(null) }
     val resID = context.resources.getIdentifier(weatherState.icon, "drawable", "com.android.whichtowear")
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    val valueRange = 0f..10f
+    var sliderPosition = 5f
 
     val locationListener = object : LocationListener {
         override fun onLocationChanged(loc: Location) {
@@ -156,10 +159,12 @@ fun SuitScreen(
         )
     }
 
-    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+    if(weatherState == Weather.empty()) {
+        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 //                    cityName = getLocationCityName(context, location) ?: "Unknown"
 //                    Log.d("CityName", "${location!!.latitude}")
-    location?.let { it1 -> changeWeatherState(it1) }
+        location?.let { it1 -> changeWeatherState(it1) }
+    }
 
     Scaffold(
         topBar = {
@@ -206,6 +211,15 @@ fun SuitScreen(
                             .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
                             .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
                         )
+                        Text(
+                            text = "湿度：${weatherState.wet}%   风速：${weatherState.wind} m/s",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                        )
                     }
                     Box(modifier = Modifier.size(16.dp))
                 }
@@ -221,8 +235,20 @@ fun SuitScreen(
 //                    }
                 }
                 ) {
-                    Text("Get Weather")
+                    Text("生成今日搭配")
                 }
+
+                Slider(
+                    value = sliderPosition,
+                    onValueChange = {
+                        sliderPosition = it
+                    },
+                    valueRange = valueRange,
+                    steps = 10,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 

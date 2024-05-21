@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +56,7 @@ import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.util.getDateFormat
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.google.android.gms.common.internal.StringResourceValueReader
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -246,13 +248,14 @@ private fun DetailScreenImage(modifier: Modifier = Modifier, image: String) {
         )
 }
 
+@Composable
 fun getPoints(clothing: Clothing):String
 {
     var points = ""
     Log.d("DEBUG",clothing.points.toString())
     if(clothing.points.and(1) == 1)
     {
-        points += R.string.read
+        points += stringResource(R.string.read)
     }
     if(clothing.points.and(2) == 2)
     {
@@ -260,7 +263,7 @@ fun getPoints(clothing: Clothing):String
         {
             points += "、"
         }
-        points += R.string.work_out
+        points += stringResource(R.string.work_out)
     }
     if(clothing.points.and(4) == 4)
     {
@@ -268,7 +271,7 @@ fun getPoints(clothing: Clothing):String
         {
             points += "、"
         }
-        points += R.string.draw
+        points += stringResource(R.string.draw)
     }
     if(clothing.points.and(8) == 8)
     {
@@ -276,7 +279,7 @@ fun getPoints(clothing: Clothing):String
         {
             points += "、"
         }
-        points += R.string.wind
+        points += stringResource(R.string.wind)
     }
     if(clothing.points.and(16) == 16)
     {
@@ -284,7 +287,7 @@ fun getPoints(clothing: Clothing):String
         {
             points += "、"
         }
-        points += R.string.play_games
+        points += stringResource(R.string.play_games)
     }
     if(clothing.points.and(32) == 32)
     {
@@ -292,7 +295,7 @@ fun getPoints(clothing: Clothing):String
         {
             points += "、"
         }
-        points += R.string.dance
+        points += stringResource(R.string.dance)
     }
     if(clothing.points.and(64) == 64)
     {
@@ -300,7 +303,7 @@ fun getPoints(clothing: Clothing):String
         {
             points += "、"
         }
-        points += R.string.watch_movies
+        points += stringResource(R.string.watch_movies)
     }
     return points
 }

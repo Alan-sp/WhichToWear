@@ -36,7 +36,7 @@
     <string name="takeaway">请选择购入这件衣服的具体日期</string>
 
     <!-- question 4  -->
-    <string name="HotAndCold">Hot or Cold</string>
+    <string name="HotAndCold">请选择这件衣服的保暖度</string>
     <string name="Hot">Hot</string>
     <string name="Cold">Cold</string>
     <string name="Medium">Medium</string>

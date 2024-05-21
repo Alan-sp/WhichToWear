@@ -2,6 +2,7 @@ package com.android.whichtowear.util
 
 import android.net.Uri
 import android.text.format.DateUtils
+import android.util.Log
 import com.android.whichtowear.db.entity.Clothing
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -42,6 +43,7 @@ fun hashList(list: List<Int>): Int {
     var result = 0
     for (element in list) {
         result += (1.shl(element))
+//        Log.d("DE",element.toString())
     }
     return result
 }
