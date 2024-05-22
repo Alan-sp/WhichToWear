@@ -108,21 +108,6 @@ fun SurveyRoute(
                     modifier = modifier,
                 )
 
-//                SurveyQuestion.LAST_TAKEAWAY -> {
-//                    val supportFragmentManager = getSupportFragmentManager()
-//                        //LocalContext.current.findActivity().supportFragmentManager
-//                    TakeawayQuestion(
-//                        dateInMillis = viewModel.takeawayResponse,
-//                        onClick = {
-//                            showTakeawayDatePicker(
-//                                date = viewModel.takeawayResponse,
-//                                supportFragmentManager = supportFragmentManager,
-//                                onDateSelected = viewModel::onTakeawayResponse
-//                            )
-//                        },
-//                        modifier = modifier,
-//                    )
-//                }
                 SurveyQuestion.LAST_TAKEAWAY -> {
                     val Context = LocalContext.current
                     TakeawayQuestion(
