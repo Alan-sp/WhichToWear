@@ -3,9 +3,12 @@ package com.android.whichtowear.db.module
 import android.content.Context
 import com.android.whichtowear.db.Impl.ClosetRepositoryImpl
 import com.android.whichtowear.db.Impl.DetailRepositoryImpl
+import com.android.whichtowear.db.Impl.WearingRepositoryImpl
 import com.android.whichtowear.db.dao.ClothingDao
+import com.android.whichtowear.db.dao.WearingDao
 import com.android.whichtowear.db.repository.ClothingRespository
 import com.android.whichtowear.db.repository.DetailRepository
+import com.android.whichtowear.db.repository.WearingRepository
 import com.android.whichtowear.survey.PhotoUriManager
 import dagger.Module
 import dagger.Provides
@@ -27,6 +30,12 @@ object RepositoryModule {
     @Singleton
     fun provideDetailRepository(clothingDao: ClothingDao): DetailRepository {
         return DetailRepositoryImpl(clothingDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWearingRepository(wearingDao: WearingDao):WearingRepository{
+        return WearingRepositoryImpl(wearingDao)
     }
 
     @Provides

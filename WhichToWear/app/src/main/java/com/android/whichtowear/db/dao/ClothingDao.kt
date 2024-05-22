@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 interface ClothingDao {
     @Query("Select * From clothing")
     fun GetAllClothing(): Flow<List<Clothing>>
-    //fun GetAllClothing(): Flow<List<Clothing>>
 
     @Query("Select * From clothing Where id =:id")
     suspend fun GetWithId(id: Int): Clothing

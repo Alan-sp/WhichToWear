@@ -13,6 +13,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.fragment.app.FragmentManager
@@ -22,6 +23,7 @@ import com.android.whichtowear.db.entity.Clothing
 //<<<<<<< HEAD
 import com.android.whichtowear.ui.ImageColorPickerScreen
 import com.android.whichtowear.util.hashList
+import com.github.skydoves.colorpicker.compose.ColorEnvelope
 //import com.google.android.material.datepicker.MaterialDatePicker
 //=======
 //import com.google.android.material.datepicker.MaterialDatePicker
@@ -57,6 +59,7 @@ fun SurveyRoute(
             warmth = viewModel.feelingAboutSelfiesResponse?:0f,
             date = viewModel.takeawayResponse?:0,
             points = hashList(viewModel.freeTimeResponse),
+            color = viewModel.color?.hexCode ?: "#FFFFFF"
         ),
         onClosePressed = {
             onNavUp()

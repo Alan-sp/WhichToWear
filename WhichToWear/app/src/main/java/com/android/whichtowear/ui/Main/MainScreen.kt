@@ -26,6 +26,8 @@ import com.android.whichtowear.ui.Closet.ClosetViewModel
 import com.android.whichtowear.ui.Main.nav.MainBottomNav
 import com.android.whichtowear.ui.Suit.SuitScreen
 import com.android.whichtowear.ui.Suit.SuitViewModel
+import com.android.whichtowear.ui.Wearing.WearingScreen
+import com.android.whichtowear.ui.Wearing.WearingViewModel
 
 @Composable
 fun MainScreen(
@@ -37,7 +39,8 @@ fun MainScreen(
     val navController:NavHostController = rememberNavController()
     var navBarVisible by remember { mutableStateOf(true) }
     val closetViewModel = hiltViewModel<ClosetViewModel>()
-    val viewModel = hiltViewModel<SuitViewModel>()
+    val suitViewModel = hiltViewModel<SuitViewModel>()
+    val wearingViewModel = hiltViewModel<WearingViewModel>()
 
     Scaffold (
         bottomBar = {
@@ -75,20 +78,24 @@ fun MainScreen(
             }
             composable("suit")
             {
-                val uiState by viewModel.uiState.collectAsState()
-                val weatherState by viewModel.weatherState.collectAsState()
-                val allState by viewModel.allState.collectAsState()
+                val uiState by suitViewModel.uiState.collectAsState()
+                val weatherState by suitViewModel.weatherState.collectAsState()
+                val allState by suitViewModel.allState.collectAsState()
                 SuitScreen(
                     uiState = uiState,
                     allState = allState,
                     weatherState = weatherState,
-                    changeWeatherState = viewModel::changeWeatherState,
+                    changeWeatherState = suitViewModel::changeWeatherState,
                     navigate = navigate,
-                    updatePhotos = viewModel::updatePhotos,
+                    updatePhotos = suitViewModel::updatePhotos,
                 )
             }
-            composable("outfit")
+            composable("wearing")
             {
+                val wearingUiState by wearingViewModel.uiState.collectAsState()
+                WearingScreen(
+                    uiState = wearingUiState,
+                )
 
             }
         }

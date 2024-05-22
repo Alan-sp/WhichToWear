@@ -91,6 +91,7 @@ fun HomeScreen()
             val uiState by viewModel.uiState.collectAsState()
             DetailScreen(
                 uiState,
+                viewModel::addToWearing,
                 viewModel::delete,
                 navController::popBackStack
             )

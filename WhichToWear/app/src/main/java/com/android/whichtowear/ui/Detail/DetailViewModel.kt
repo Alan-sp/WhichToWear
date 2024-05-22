@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
+import com.android.whichtowear.db.entity.Wearing
 import com.android.whichtowear.db.repository.DetailRepository
+import com.android.whichtowear.db.repository.WearingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +26,7 @@ sealed class DetailUiState {
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    //private val outfitRepository: OutfitRepository,
+    private val wearingRepository: WearingRepository,
     private val detailRepository: DetailRepository
 ) : ViewModel() {
 
@@ -44,13 +46,13 @@ class DetailViewModel @Inject constructor(
         _uiState.value = newState
     }
 
-//    fun addToOutfit(clothing: Clothing, onComplete: () -> Unit) {
-//        viewModelScope.launch {
-//            val outfit = Outfit(clothingId = clothing.id, image = clothing.image)
-//            outfitRepository.insertAll(listOf(outfit))
-//            onComplete()
-//        }
-//    }
+    fun addToWearing(clothing: Clothing, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            val wear = Wearing(clothingId = clothing.id, image = clothing.image)
+            wearingRepository.InsertAll(listOf(wear))
+            onComplete()
+        }
+    }
 
 //    fun addToLaundry(onComplete: () -> Unit) {
 //        viewModelScope.launch {

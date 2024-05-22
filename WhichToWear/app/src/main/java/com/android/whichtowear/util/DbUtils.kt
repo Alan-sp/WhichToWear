@@ -4,8 +4,11 @@ import android.net.Uri
 import android.text.format.DateUtils
 import android.util.Log
 import com.android.whichtowear.db.entity.Clothing
+import com.android.whichtowear.db.entity.Wearing
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Date
 
 //fun List<Uri?>.toClothingList(
 //    warmth: Float,
@@ -20,12 +23,11 @@ import java.time.format.DateTimeFormatter
 //    }
 //}
 
-//fun List<Outfit>.groupByTimestamp() = run {
-//    this.groupBy {
-//        Date(it.timestamp).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-//    }
-//}
-
+fun List<Wearing>.groupByTimestamp() = run {
+    this.groupBy {
+        Date(it.timestamp).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    }
+}
 fun getDateFromTimeStamp(timestamp: Long): String {
     return DateUtils.getRelativeTimeSpanString(
         timestamp,

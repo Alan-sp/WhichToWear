@@ -3,6 +3,7 @@ package com.android.whichtowear.db.module
 import android.app.Application
 import androidx.room.Room
 import com.android.whichtowear.db.dao.ClothingDao
+import com.android.whichtowear.db.dao.WearingDao
 import com.android.whichtowear.db.database.ClothingDatabase
 import dagger.Module
 import dagger.Provides
@@ -29,6 +30,12 @@ object DatabaseModule {
     @Provides
     fun provideClothingDao(clothingDatabase: ClothingDatabase): ClothingDao {
         return clothingDatabase.clothingDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideWearingDao(clothingDatabase: ClothingDatabase):WearingDao{
+        return clothingDatabase.wearingDao()
     }
 
 }

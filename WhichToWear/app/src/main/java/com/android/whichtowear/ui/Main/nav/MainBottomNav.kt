@@ -34,13 +34,13 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
             icon = { Icon(Icons.Default.Notifications, contentDescription = "") },
             label = { Text(text = MainUiState.Suit.route) })
 
-        NavigationBarItem(selected = uiState.route == MainUiState.Outfit.route,
+        NavigationBarItem(selected = uiState.route == MainUiState.Wearing.route,
             onClick = {
-                updateUiState(MainUiState.Outfit)
-                navController.navigate(MainUiState.Outfit.route)
+                updateUiState(MainUiState.Wearing)
+                navController.navigate(MainUiState.Wearing.route)
             },
             icon = { Icon(Icons.Default.Menu, contentDescription = "") },
-            label = { Text(text = MainUiState.Outfit.route) })
+            label = { Text(text = MainUiState.Wearing.route) })
         
         NavigationBarItem(selected = uiState.route == MainUiState.Memo.route,
             onClick = {

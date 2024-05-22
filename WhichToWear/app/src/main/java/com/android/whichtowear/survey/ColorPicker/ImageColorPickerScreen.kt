@@ -1,6 +1,8 @@
 package com.android.whichtowear.ui
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
@@ -48,26 +52,9 @@ import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.ImageColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
-
-
-@Composable
-fun AsyncImageToBitmap(imageUri: Uri?): ImageBitmap? {
-    var imageBitmap: ImageBitmap? by remember { mutableStateOf(null) }
-
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUri)
-            .build()
-    )
-
-    LaunchedEffect(painter) {
-        val state = painter.state
-        if (state is AsyncImagePainter.State.Success) {
-            imageBitmap = state.result.drawable.toBitmap().asImageBitmap()
-        }
-    }
-    return imageBitmap
-}
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.FileInputStream
 
 @Composable
 fun ImageColorPickerScreen(
@@ -83,22 +70,41 @@ fun ImageColorPickerScreen(
 
     Column {
         Spacer(modifier = Modifier.weight(1f))
-
         PhotoPickerIcon(controller)
 
-        ImageColorPicker(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(10.dp),
-            controller = controller,
-            //paletteImageBitmap = ImageBitmap.imageResource(R.drawable.frag),
-            paletteImageBitmap = AsyncImageToBitmap(imageUri= imageUri)?: ImageBitmap(1,1),
-            onColorChanged = {
-                color_E = it
-                onColorChanged(color_E!!)
-            },
-        )
+        var paletteImageBitmap by remember(imageUri) { mutableStateOf<ImageBitmap?>(null) }
+        LaunchedEffect(imageUri) {
+            if (imageUri != null) {
+                val bitmap = withContext(Dispatchers.IO) {
+                    loadBitmapFromFile(context, imageUri)
+                }
+                paletteImageBitmap = bitmap
+            }
+        }
+        val maxWidth = 400.dp
+        val maxHeight = 400.dp
+        paletteImageBitmap?.let { bitmap ->
+            val aspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+
+            val calculatedWidth = (maxWidth.value * aspectRatio).coerceAtMost(maxWidth.value)
+            val calculatedHeight = (maxHeight.value / aspectRatio).coerceAtMost(maxHeight.value)
+
+            val finalWidth = calculatedWidth.dp.coerceAtMost(maxWidth)
+            val finalHeight = calculatedHeight.dp.coerceAtMost(maxHeight)
+            ImageColorPicker(
+                modifier = Modifier
+                    .width(finalWidth)
+                    .height(finalHeight)
+                    .padding(10.dp)
+                    .align(Alignment.CenterHorizontally),
+                controller = controller,
+                paletteImageBitmap = bitmap,
+                onColorChanged = {
+                    color_E = it
+                    onColorChanged(color_E!!)
+                }
+            )
+        }
 
         Spacer(modifier = Modifier.weight(5f))
 
@@ -144,6 +150,17 @@ fun ImageColorPickerScreen(
     }
 }
 
+suspend fun loadBitmapFromFile(context: Context, uri: Uri): ImageBitmap {
+    return withContext(Dispatchers.IO) {
+        val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")
+        val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+        val fileInputStream = FileInputStream(fileDescriptor)
+        val bitmap = BitmapFactory.decodeStream(fileInputStream)
+        parcelFileDescriptor?.close()
+        bitmap.asImageBitmap()
+    }
+}
+
 @Preview
 @Composable
 fun ImageColorPickerPreview(){
@@ -152,7 +169,7 @@ fun ImageColorPickerPreview(){
             ImageColorPickerScreen (
                 color = ColorEnvelope(Color.White,"#FFFFFF",false),
                 onColorChanged = {},
-                imageUri = Uri.parse("https://example.bogus/wow"),
+                imageUri = Uri.parse("https://example.bogus/wow")
             )
         }
     }

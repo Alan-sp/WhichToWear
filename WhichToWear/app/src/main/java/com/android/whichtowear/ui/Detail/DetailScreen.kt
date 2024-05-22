@@ -64,6 +64,7 @@ import java.util.Date
 @Composable
 fun DetailScreen(
     uiState: DetailUiState,
+    addToWearing: (clothing: Clothing, () -> Unit) -> Unit,
     delete: (() -> Unit) -> Unit,
     popBackStack: () -> Unit
 ) {
@@ -94,7 +95,7 @@ fun DetailScreen(
         },
         bottomBar = {
             if (uiState is DetailUiState.OpenDetail)
-                DetailScreenBottomAppBar(context, uiState.clothing,)
+                DetailScreenBottomAppBar(context, uiState.clothing, addToWearing)
         }
     ) { innerPadding ->
         Box(
@@ -186,20 +187,25 @@ fun DetailScreen(
 fun DetailScreenBottomAppBar(
     context: Context,
     clothing: Clothing,
+    addToWearing:(clothing:Clothing,()->Unit)->Unit,
 ) {
     BottomAppBar(
         actions = {
-//            FilledTonalButton(
-//                onClick = {
-//                }
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.closet),
-//                    contentDescription = "Add to outfit"
-//                )
-//                Box(modifier = Modifier.width(4.dp))
-//                Text(text = "Add to outfit")
-//            }
+            FilledTonalButton(
+                onClick = {
+                    addToWearing(clothing){
+                        Toast.makeText(context,"Added to wearing",Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.closet),
+                    contentDescription = "Add to outfit"
+                )
+                Box(modifier = Modifier.width(4.dp))
+                Text(text = "Add to wearing")
+            }
 //            Box(modifier = Modifier.width(16.dp))
 //            FilledTonalButton(
 //                onClick = {
