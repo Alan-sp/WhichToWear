@@ -77,7 +77,7 @@ fun ClosetScreen(
                     onClick = {
                         navigate("survey")
                     },
-                    text = { Text("添加衣服r") },
+                    text = { Text("添加衣服") },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Add,

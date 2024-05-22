@@ -41,6 +41,8 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.widget.Space
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,6 +53,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -59,6 +62,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -77,6 +81,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.app.ActivityCompat
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.retro.data.Weather
@@ -84,19 +89,6 @@ import com.android.whichtowear.ui.Closet.ClosetUiState
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import java.util.*
-
-//@SuppressLint("MissingPermission")
-//private fun getLocationCityName(context: Context,location: Location?): String {
-//    val geocoder = Geocoder(context, Locale.getDefault())
-//    location?.let {
-//        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-//        if (addresses!!.isNotEmpty()) {
-//            return addresses[0].locality
-//        }
-//    }
-//    return "Unknown" + "${location?.latitude},${location?.longitude}"
-//}
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "DiscouragedApi")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
@@ -109,17 +101,17 @@ fun SuitScreen(
     updatePhotos: (List<Clothing>) -> Unit,
     navigate: (String) -> Unit
 ) {
-    var weatherInfo by remember { mutableStateOf(
-        "\"City: ${weatherState.main}, Country: ${weatherState.country}\\nWeather: ${weatherState.info}, Temperature: ${weatherState.temp - 273.15}°C\""
-    ) }
 
     val context = LocalContext.current
     var location by remember { mutableStateOf<Location?>(null) }
     var cityName by remember { mutableStateOf<String?>(null) }
+    var isPressed by remember { mutableStateOf(false) }
+    var isSport by remember { mutableStateOf(false) }
+    var isMeet by remember { mutableStateOf(false) }
+    var isColor by remember { mutableStateOf(false) }
+
     val resID = context.resources.getIdentifier(weatherState.icon, "drawable", "com.android.whichtowear")
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    val valueRange = 0f..10f
-    var sliderPosition = 5f
 
     val locationListener = object : LocationListener {
         override fun onLocationChanged(loc: Location) {
@@ -161,7 +153,8 @@ fun SuitScreen(
 
     if(weatherState == Weather.empty()) {
         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-//                    cityName = getLocationCityName(context, location) ?: "Unknown"
+//                    cityName = g
+//    Shirt =etLocationCityName(context, location) ?: "Unknown"
 //                    Log.d("CityName", "${location!!.latitude}")
         location?.let { it1 -> changeWeatherState(it1) }
     }
@@ -208,8 +201,8 @@ fun SuitScreen(
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
-                            .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                                .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
                         )
                         Text(
                             text = "湿度：${weatherState.wet}%   风速：${weatherState.wind} m/s",
@@ -223,40 +216,73 @@ fun SuitScreen(
                     }
                     Box(modifier = Modifier.size(16.dp))
                 }
+
+                Text(
+                    text = "今日活动：",
+//                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.CenterStart),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Start,
+//                    layoutDirection = LayoutDirection.Ltr,
+                    fontSize = 20.sp,
+                )
+                CheckboxRow(text = "今日是否有运动安排",
+                            selected = isSport,
+                            onOptionSelected = { isSport = !isSport })
+                CheckboxRow(text = "今日是否参加正式场合",
+                    selected = isMeet,
+                    onOptionSelected = { isMeet = !isMeet })
+                CheckboxRow(text = "今日是否有社交活动",
+                    selected = isColor,
+                    onOptionSelected = { isColor = !isColor })
 //                Card(
 //                    modifier = Modifier.fillMaxWidth(),
 //                    shape = RoundedCornerShape(4.dp)
 //                ) {
 //                }
-                Button(onClick = {
-                    updatePhotos(selectPhotos(allState as ClosetUiState.PhotoList))
-//                    fetchWeather(cityName!!) {
-//                        weatherInfo = it
-//                    }
+                if(!isPressed)
+                {
+                    Button(onClick = {
+                        updatePhotos(selectPhotos(
+                            allState as ClosetUiState.PhotoList,
+                            weatherState,
+                            isSport,
+                            isMeet,
+                            isColor
+                        ))
+                        isPressed = true
+                    }
+                    ) {
+                        Text("生成今日搭配")
+                    }
                 }
-                ) {
-                    Text("生成今日搭配")
+                else
+                {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Button(onClick = {
+                            updatePhotos(selectPhotos(allState as ClosetUiState.PhotoList,
+                                weatherState,
+                                isSport,
+                                isMeet,
+                                isColor
+                            ))
+                            isPressed = true
+                        }) {
+                                Text("重新生成")
+                        }
+                        Spacer(modifier = Modifier.size(20.dp))
+                        Button(onClick = {
+                            }) {
+                            Text("添加至今日穿搭")
+                        }
+                    }
                 }
-
-                Slider(
-                    value = sliderPosition,
-                    onValueChange = {
-                        sliderPosition = it
-                    },
-                    valueRange = valueRange,
-                    steps = 10,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "\"City: ${weatherState.main}, Country: ${weatherState.country}\\nWeather: ${weatherState.info}, Temperature: ${weatherState.temp - 273.15}°C\"",
-//                    text = weatherInfo,
-                    fontSize = 20.sp,
-                )
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -276,6 +302,9 @@ fun SuitScreen(
                                         modifier = Modifier
                                             .aspectRatio(1f / 1.6f)
                                             .clip(shape = RoundedCornerShape(4.dp))
+                                            .clickable {
+                                                navigate("detail/${photo.id}")
+                                            }
                                     )
                                 }
                             },
@@ -288,16 +317,96 @@ fun SuitScreen(
     }
 }
 
+@Composable
+fun CheckboxRow(
+    text: String,
+    selected: Boolean,
+    onOptionSelected: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        color = if (selected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.outline
+            }
+        ),
+        modifier = modifier
+            .clip(MaterialTheme.shapes.small)
+            .clickable(onClick = onOptionSelected)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+            Box(Modifier.padding(5.dp)) {
+                Checkbox(selected, onCheckedChange = null)
+            }
+        }
+    }
+}
+
 fun selectPhotos(
-    uiState: ClosetUiState.PhotoList
+    uiState: ClosetUiState.PhotoList,
+    weatherState: Weather,
+    isSport: Boolean,
+    isMeet: Boolean,
+    isColor: Boolean
 ):List<Clothing>
 {
     val resList = mutableListOf<Clothing>()
-//    val
-    for(i in uiState.photos.indices)
+    var Shirt = Clothing.empty()
+    var Pants = Clothing.empty()
+    var Shoes = Clothing.empty()
+    var shirtList = mutableListOf<Clothing>()
+    var pantsList = mutableListOf<Clothing>()
+    var shoesList = mutableListOf<Clothing>()
+    if(isSport)
     {
-        if(i%2 != 0)
-            resList.add(uiState.photos[i])
+        shirtList.addAll((uiState.photos.filter { it.type == 0 && (it.points.and(1) == 1) }).toMutableList())
+        pantsList.addAll((uiState.photos.filter { it.type == 1 && (it.points.and(1) == 1) }).toMutableList())
+        shoesList.addAll((uiState.photos.filter { it.type == 2 && (it.points.and(1) == 1) }).toMutableList())
     }
+    if(isMeet)
+    {
+        shirtList.addAll((uiState.photos.filter { it.type == 0 && (it.points.and(64) == 64) }).toMutableList())
+        pantsList.addAll((uiState.photos.filter { it.type == 1 && (it.points.and(64) == 64) }).toMutableList())
+        shoesList.addAll((uiState.photos.filter { it.type == 2 && (it.points.and(64) == 64) }).toMutableList())
+        if(Shirt == Clothing.empty())
+            shirtList.addAll(uiState.photos.filter { it.type == 0 && (it.points.and(32) == 32)}.toMutableList())
+        if(Pants == Clothing.empty())
+            pantsList.addAll(uiState.photos.filter { it.type == 1 && (it.points.and(32) == 32)}.toMutableList())
+        if(Shoes == Clothing.empty())
+            shoesList.addAll(uiState.photos.filter { it.type == 2 && (it.points.and(32) == 32)}.toMutableList())
+    }
+    if(isColor)
+    {
+        shirtList.addAll((uiState.photos.filter { it.type == 0 && (it.points.and(16) == 16) }).toMutableList())
+        pantsList.addAll((uiState.photos.filter { it.type == 1 && (it.points.and(16) == 16) }).toMutableList())
+        shoesList.addAll((uiState.photos.filter { it.type == 2 && (it.points.and(16) == 16) }).toMutableList())
+    }
+    shirtList.addAll((uiState.photos.filter { it.type == 0 && weatherState.temp + it.warmth >= 30 }).toMutableList())
+    pantsList.addAll((uiState.photos.filter { it.type == 1 && weatherState.temp + it.warmth >= 30}).toMutableList())
+    shoesList.addAll((uiState.photos.filter { it.type == 2 && weatherState.temp + it.warmth >= 30}).toMutableList())
+    Shirt = if(shirtList.isNotEmpty()) shirtList.random()
+    else uiState.photos.filter { it.type == 0 }.random()
+    Pants = if(pantsList.isNotEmpty()) pantsList.random()
+    else uiState.photos.filter { it.type == 1 }.random()
+    Shoes = if(shoesList.isNotEmpty()) shoesList.random()
+    else uiState.photos.filter { it.type == 2 }.random()
+    if(Shirt != Clothing.empty()) resList.add(Shirt)
+    if(Pants != Clothing.empty()) resList.add(Pants)
+    if(Shoes != Clothing.empty()) resList.add(Shoes)
     return resList
 }

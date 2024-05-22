@@ -27,4 +27,7 @@ data class Clothing(
         date = date,
         points = points
         )
+    companion object{
+        fun empty() = Clothing(0, "", 0, 0.0f, 0, 0, 0)
+    }
 }
