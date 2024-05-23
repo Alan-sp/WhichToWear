@@ -19,8 +19,8 @@ class WearingRepositoryImpl @Inject constructor(
     }.map {
         it.mapKeys { (localDate, _) ->
             when(localDate){
-                currentDate -> "Today"
-                currentDate.minusDays(1) -> "Yesterday"
+                currentDate -> "今天"
+                currentDate.minusDays(1) -> "昨日"
                 else -> getFormattedDateFromLocalDate(localDate)
             }
         }

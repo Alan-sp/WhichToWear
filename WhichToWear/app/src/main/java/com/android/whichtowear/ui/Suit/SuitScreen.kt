@@ -129,14 +129,6 @@ fun SuitScreen(
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
     }
-    val todayList = selectPhotos(
-        allState as ClosetUiState.PhotoList,
-        weatherState,
-        isSport,
-        isMeet,
-        isColor
-    )
-
     LaunchedEffect(locationManager) {
         if (ActivityCompat.checkSelfPermission(
                 context,
@@ -167,14 +159,14 @@ fun SuitScreen(
     }
 
     if(weatherState == Weather.empty()  &&
-            ActivityCompat.checkSelfPermission(
-                    context,
-        Manifest.permission.ACCESS_FINE_LOCATION
+        ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-        context,
-        Manifest.permission.ACCESS_COARSE_LOCATION
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
-        ) {
+    ) {
         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 //                    cityName = g
 //    Shirt =etLocationCityName(context, location) ?: "Unknown"
@@ -213,7 +205,7 @@ fun SuitScreen(
                             Text(
                                 text = weatherState.info + "   ${(weatherState.temp - 273.15).toInt()} ℃",
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 40.sp,
+                                fontSize = 35.sp,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
@@ -302,14 +294,22 @@ fun SuitScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Button(onClick = {
-                            updatePhotos(todayList)
+                            updatePhotos(selectPhotos(
+                                allState as ClosetUiState.PhotoList,
+                                weatherState,
+                                isSport,
+                                isMeet,
+                                isColor
+                            ))
                             isPressed = true
                         }) {
                             Text("重新生成")
                         }
                         Spacer(modifier = Modifier.size(20.dp))
                         Button(onClick = {
-                            addToWearings(todayList)
+                            if(uiState is ClosetUiState.PhotoList) {
+                                addToWearings(uiState.photos)
+                            }
                         }) {
                             Text("添加至今日穿搭")
                         }

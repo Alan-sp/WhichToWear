@@ -1,21 +1,20 @@
 package com.android.whichtowear.survey
 
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.db.repository.ClothingRespository
 import com.android.whichtowear.survey.question.Superhero
-//import com.android.whichtowear.util.toClothingList
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.reflect.typeOf
+
 
 const val simpleDateFormatPattern = "EEE, MMM d"
 
@@ -133,20 +132,10 @@ class SurveyViewModel @Inject constructor(
         _selfieUri.value = uri
         _isNextEnabled.value = getIsNextEnabled()
     }
-
     fun onColorResponse(color: ColorEnvelope){
         _color.value = color
         _isNextEnabled.value = getIsNextEnabled()
     }
-
-//    fun addPhotos(photos: List<Uri?>) {
-//        viewModelScope.launch {
-//            repository.InsertAll(photos.toClothingList(
-//                warmth = _feelingAboutSelfiesResponse.value?:0.0f,
-//                type = _superheroResponse.value?.id?:1,
-//            ))
-//        }
-//    }
 
     fun addClothing(clothing: Clothing) {
         viewModelScope.launch {
@@ -179,18 +168,6 @@ class SurveyViewModel @Inject constructor(
         )
     }
 }
-
-//class SurveyViewModelFactory(
-//    private val photoUriManager: PhotoUriManager
-//) : ViewModelProvider.Factory {
-//    @Suppress("UNCHECKED_CAST")
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(SurveyViewModel::class.java)) {
-//            return SurveyViewModel(repository = ClothingRespository,photoUriManager) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-//}
 
 enum class SurveyQuestion {
     FREE_TIME,

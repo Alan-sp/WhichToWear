@@ -51,6 +51,8 @@
     <!-- question 6-->
     <string name="get_color">选取这件衣服的代表色</string>>
 
+    <string name="wearing">今日穿搭</string>>
+
 
     <string name="survey_result_title">Compose</string>
     <string name="survey_result_subtitle">Congratulations, you are Compose</string>

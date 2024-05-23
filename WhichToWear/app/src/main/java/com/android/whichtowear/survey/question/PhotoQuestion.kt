@@ -115,6 +115,7 @@ fun PhotoQuestion(
                         .aspectRatio(4 / 3f)
                         .align(Alignment.CenterHorizontally)
                 )
+                //
             } else {
                 PhotoDefaultImage(
                     modifier = Modifier.padding(
@@ -204,7 +205,6 @@ fun PhotoQuestionPreview() {
                 imageUri = Uri.parse("https://example.bogus/wow"),
                 getNewImageUri = { Uri.EMPTY },
                 onPhotoTaken = {},
-//                addPhotos = {},
                 modifier = Modifier.padding(16.dp),
             )
         }
