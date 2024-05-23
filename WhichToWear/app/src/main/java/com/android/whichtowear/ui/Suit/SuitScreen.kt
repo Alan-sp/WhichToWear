@@ -129,14 +129,6 @@ fun SuitScreen(
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
     }
-    val todayList = selectPhotos(
-        allState as ClosetUiState.PhotoList,
-        weatherState,
-        isSport,
-        isMeet,
-        isColor
-    )
-
     LaunchedEffect(locationManager) {
         if (ActivityCompat.checkSelfPermission(
                 context,
@@ -302,14 +294,22 @@ fun SuitScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Button(onClick = {
-                            updatePhotos(todayList)
+                            updatePhotos(selectPhotos(
+                                allState as ClosetUiState.PhotoList,
+                                weatherState,
+                                isSport,
+                                isMeet,
+                                isColor
+                            ))
                             isPressed = true
                         }) {
                             Text("重新生成")
                         }
                         Spacer(modifier = Modifier.size(20.dp))
                         Button(onClick = {
-                            addToWearings(todayList)
+                            if(uiState is ClosetUiState.PhotoList) {
+                                addToWearings(uiState.photos)
+                            }
                         }) {
                             Text("添加至今日穿搭")
                         }
