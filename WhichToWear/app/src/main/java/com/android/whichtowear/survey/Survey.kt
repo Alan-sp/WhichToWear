@@ -111,11 +111,14 @@ fun TakeSelfieQuestion(
 fun PickColor(
     color : ColorEnvelope?,
     onColorChanged: (colorEnvelope: ColorEnvelope) -> Unit,
-    imageUri: Uri?
+    imageUri: Uri?,
+    modifier: Modifier,
 ){
     ImageColorPickerScreen(
+        titleResourceId = R.string.get_color,
         color = color,
         onColorChanged = onColorChanged,
         imageUri = imageUri,
+        modifier = modifier,
     )
 }

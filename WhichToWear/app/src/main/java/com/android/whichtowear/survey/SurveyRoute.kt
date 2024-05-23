@@ -141,6 +141,7 @@ fun SurveyRoute(
                     color = viewModel.color,
                     onColorChanged = viewModel::onColorResponse,
                     imageUri = viewModel.selfieUri,
+                    modifier = modifier,
                 )
             }
         }

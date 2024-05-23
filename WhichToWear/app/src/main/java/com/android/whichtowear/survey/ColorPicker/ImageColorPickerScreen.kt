@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +46,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.android.whichtowear.R
 import com.android.whichtowear.survey.ColorPicker.PhotoPickerIcon
+import com.android.whichtowear.survey.QuestionWrapper
 import com.android.whichtowear.ui.theme.WhichToWearTheme
 import com.github.skydoves.colorpicker.compose.AlphaSlider
 import com.github.skydoves.colorpicker.compose.AlphaTile
@@ -58,95 +60,101 @@ import java.io.FileInputStream
 
 @Composable
 fun ImageColorPickerScreen(
+    @StringRes titleResourceId: Int,
     color : ColorEnvelope?,
     onColorChanged: (colorEnvelope: ColorEnvelope) -> Unit,
-    imageUri: Uri?
+    imageUri: Uri?,
+    modifier: Modifier = Modifier,
 ) {
     val controller = rememberColorPickerController()
     val context = LocalContext.current
     var color_E by remember {
         mutableStateOf(color?:ColorEnvelope(Color.White,"#FFFFFF",false))
     }
+    QuestionWrapper(
+        titleResourceId = titleResourceId,
+        modifier = modifier,
+    ){
+        Column {
+            //Spacer(modifier = Modifier.weight(1f))
+            PhotoPickerIcon(controller)
 
-    Column {
-        Spacer(modifier = Modifier.weight(1f))
-        PhotoPickerIcon(controller)
-
-        var paletteImageBitmap by remember(imageUri) { mutableStateOf<ImageBitmap?>(null) }
-        LaunchedEffect(imageUri) {
-            if (imageUri != null) {
-                val bitmap = withContext(Dispatchers.IO) {
-                    loadBitmapFromFile(context, imageUri)
+            var paletteImageBitmap by remember(imageUri) { mutableStateOf<ImageBitmap?>(null) }
+            LaunchedEffect(imageUri) {
+                if (imageUri != null) {
+                    val bitmap = withContext(Dispatchers.IO) {
+                        loadBitmapFromFile(context, imageUri)
+                    }
+                    paletteImageBitmap = bitmap
                 }
-                paletteImageBitmap = bitmap
             }
-        }
-        val maxWidth = 400.dp
-        val maxHeight = 400.dp
-        paletteImageBitmap?.let { bitmap ->
-            val aspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+            val maxWidth = 400.dp
+            val maxHeight = 400.dp
+            paletteImageBitmap?.let { bitmap ->
+                val aspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
 
-            val calculatedWidth = (maxWidth.value * aspectRatio).coerceAtMost(maxWidth.value)
-            val calculatedHeight = (maxHeight.value / aspectRatio).coerceAtMost(maxHeight.value)
+                val calculatedWidth = (maxWidth.value * aspectRatio).coerceAtMost(maxWidth.value)
+                val calculatedHeight = (maxHeight.value / aspectRatio).coerceAtMost(maxHeight.value)
 
-            val finalWidth = calculatedWidth.dp.coerceAtMost(maxWidth)
-            val finalHeight = calculatedHeight.dp.coerceAtMost(maxHeight)
-            ImageColorPicker(
+                val finalWidth = calculatedWidth.dp.coerceAtMost(maxWidth)
+                val finalHeight = calculatedHeight.dp.coerceAtMost(maxHeight)
+                ImageColorPicker(
+                    modifier = Modifier
+                        .width(finalWidth)
+                        .height(finalHeight)
+                        .padding(10.dp)
+                        .align(Alignment.CenterHorizontally),
+                    controller = controller,
+                    paletteImageBitmap = bitmap,
+                    onColorChanged = {
+                        color_E = it
+                        onColorChanged(color_E!!)
+                    }
+                )
+            }
+
+            //Spacer(modifier = Modifier.weight(5f))
+
+            AlphaSlider(
                 modifier = Modifier
-                    .width(finalWidth)
-                    .height(finalHeight)
+                    .fillMaxWidth()
                     .padding(10.dp)
+                    .height(35.dp)
                     .align(Alignment.CenterHorizontally),
                 controller = controller,
-                paletteImageBitmap = bitmap,
-                onColorChanged = {
-                    color_E = it
-                    onColorChanged(color_E!!)
-                }
             )
+
+            BrightnessSlider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .height(35.dp)
+                    .align(Alignment.CenterHorizontally),
+                controller = controller,
+            )
+
+            //Spacer(modifier = Modifier.weight(3f))
+
+            Text(
+                //text = "#$hexCode",
+                //color = textColor,
+                text = "#${color_E!!.hexCode}",
+                color = color_E!!.color,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
+
+            AlphaTile(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .align(Alignment.CenterHorizontally),
+                controller = controller,
+            )
+
+            Spacer(modifier = Modifier.height(50.dp))
         }
-
-        Spacer(modifier = Modifier.weight(5f))
-
-        AlphaSlider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .height(35.dp)
-                .align(Alignment.CenterHorizontally),
-            controller = controller,
-        )
-
-        BrightnessSlider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .height(35.dp)
-                .align(Alignment.CenterHorizontally),
-            controller = controller,
-        )
-
-        Spacer(modifier = Modifier.weight(3f))
-
-        Text(
-            //text = "#$hexCode",
-            //color = textColor,
-            text = "#${color_E!!.hexCode}",
-            color = color_E!!.color,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-        )
-
-        AlphaTile(
-            modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(6.dp))
-                .align(Alignment.CenterHorizontally),
-            controller = controller,
-        )
-
-        Spacer(modifier = Modifier.height(50.dp))
     }
 }
 
@@ -167,9 +175,11 @@ fun ImageColorPickerPreview(){
     WhichToWearTheme {
         Surface {
             ImageColorPickerScreen (
+                titleResourceId = R.string.get_color,
                 color = ColorEnvelope(Color.White,"#FFFFFF",false),
                 onColorChanged = {},
-                imageUri = Uri.parse("https://example.bogus/wow")
+                imageUri = Uri.parse("https://example.bogus/wow"),
+                modifier = Modifier.padding(16.dp),
             )
         }
     }

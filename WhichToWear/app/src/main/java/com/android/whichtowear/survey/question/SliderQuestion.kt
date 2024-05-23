@@ -109,7 +109,6 @@ fun getImageForSliderValue(value: Float): Int {
         0f -> R.drawable.vest
         1f -> R.drawable.vest
         2f -> R.drawable.vest
-        3f -> R.drawable.vest
         8f -> R.drawable.stylish_jacket
         9f -> R.drawable.stylish_jacket
         10f -> R.drawable.stylish_jacket

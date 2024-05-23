@@ -54,22 +54,31 @@ fun PhotoQuestion(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+//    val launcher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
+//    ) { uris ->
+//        if (uris.isNotEmpty()) {
+//            Timber.d("Number of items selected: ${uris.size}")
+//            for (uri in uris)
+//                context.contentResolver.takePersistableUriPermission(
+//                    uri,
+//                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                )
+//            onPhotoTaken(uris[0])
+//        } else {
+//            Timber.d("No media selected")
+//        }
+//    }
     val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
-    ) { uris ->
-        if (uris.isNotEmpty()) {
-            Timber.d("Number of items selected: ${uris.size}")
-            for (uri in uris)
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-            onPhotoTaken(uris[0])
-//            addPhotos(uris)
-        } else {
-            Timber.d("No media selected")
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            if (uri != null) {
+                onPhotoTaken(uri)
+            } else {
+                Timber.d("No media selected")
+            }
         }
-    }
+    )
     val hasPhoto = imageUri != null
     val iconResource = if (hasPhoto) {
         Icons.Filled.SwapHoriz
@@ -119,7 +128,7 @@ fun PhotoQuestion(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.BottomCenter)
-                    .padding(vertical = 26.dp),
+                    .padding(vertical = 10.dp),
                 onClick = {
                     newImageUri = getNewImageUri()
                     cameraLauncher.launch(newImageUri)
@@ -141,13 +150,14 @@ fun PhotoQuestion(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.BottomCenter)
-                    .padding(vertical = 26.dp),
+                    .padding(vertical = 10.dp),
                 onClick = {
-                    launcher.launch(
-                        PickVisualMediaRequest(
-                            ActivityResultContracts.PickVisualMedia.ImageOnly
-                        )
-                    )
+//                    launcher.launch(
+//                        PickVisualMediaRequest(
+//                            ActivityResultContracts.PickVisualMedia.ImageOnly
+//                        )
+//                    )
+                    launcher.launch("image/*")
                 },
             ) {
                 Icon(imageVector = iconResource, contentDescription = null)

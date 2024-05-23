@@ -33,7 +33,7 @@
     <string name="frag">Frag</string>
 
     <!-- question 3  -->
-    <string name="takeaway">请选择购入这件衣服的具体日期</string>
+    <string name="takeaway">请选择购入这件衣服的大致日期</string>
 
     <!-- question 4  -->
     <string name="HotAndCold">请选择这件衣服的保暖度</string>
@@ -47,6 +47,9 @@
     <string name="retake_photo">重新拍摄</string>
     <string name="choose_photo">相册选择</string>
     <string name="rechoose_photo">重新选择</string>
+
+    <!-- question 6-->
+    <string name="get_color">选取这件衣服的代表色</string>>
 
 
     <string name="survey_result_title">Compose</string>

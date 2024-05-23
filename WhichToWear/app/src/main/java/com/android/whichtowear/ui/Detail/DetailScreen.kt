@@ -197,16 +197,18 @@ fun DetailScreenBottomAppBar(
                         Toast.makeText(context,"Added to wearing",Toast.LENGTH_SHORT)
                             .show()
                     }
-                }
+                },
+
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.closet),
-                    contentDescription = "Add to outfit"
+                    contentDescription = ""
                 )
                 Box(modifier = Modifier.width(4.dp))
-                Text(text = "Add to wearing")
+                Text(text = "加入今日穿搭")
             }
         },
+
     )
 }
 
