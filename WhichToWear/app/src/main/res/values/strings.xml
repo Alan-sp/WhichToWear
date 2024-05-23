@@ -37,9 +37,9 @@
 
     <!-- question 4  -->
     <string name="HotAndCold">请选择这件衣服的保暖度</string>
-    <string name="Hot">Hot</string>
-    <string name="Cold">Cold</string>
-    <string name="Medium">Medium</string>
+    <string name="Hot">温暖</string>
+    <string name="Cold">清凉</string>
+    <string name="Medium">适中</string>
 
     <!-- question 5-->
     <string name="selfie_skills">拍摄或选择一张衣服的照片</string>

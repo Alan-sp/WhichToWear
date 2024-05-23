@@ -4,7 +4,9 @@ import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
+import com.android.whichtowear.db.entity.Wearing
 import com.android.whichtowear.db.repository.ClothingRespository
+import com.android.whichtowear.db.repository.WearingRepository
 import com.android.whichtowear.retro.data.Weather
 import com.android.whichtowear.retro.repository.WeatherRepository
 import com.android.whichtowear.ui.Closet.ClosetUiState
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SuitViewModel @Inject constructor(
     private val weatherepository: WeatherRepository,
-    private val clothingRespository: ClothingRespository
+    private val clothingRespository: ClothingRespository,
+    private val wearingRepository: WearingRepository
 ): ViewModel()
 {
     private val _weatherState = MutableStateFlow<Weather>(Weather.empty())
@@ -68,9 +71,14 @@ class SuitViewModel @Inject constructor(
         _allState.value = newState
     }
 
-    fun getAll() : Flow<List<Clothing>>
-    {
-        return clothingRespository.GetAll()
+    fun addToWearings(clothes: List<Clothing>) {
+        viewModelScope.launch {
+            for(clothing in clothes)
+            {
+                val wear = Wearing(clothingId = clothing.id, image = clothing.image)
+                wearingRepository.InsertAll(listOf(wear))
+            }
+        }
     }
 
     fun updatePhotos(photos: List<Clothing>) {

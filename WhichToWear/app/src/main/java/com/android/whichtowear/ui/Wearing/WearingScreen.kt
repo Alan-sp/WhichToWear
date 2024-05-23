@@ -41,7 +41,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 fun WearingScreen(uiState: WearingUiState){
     Scaffold(
         topBar = {
-            TopAppBar(title={Text(text = "穿着")})
+            TopAppBar(title={Text(text = "穿搭记录")})
         },
     ){
         Box(

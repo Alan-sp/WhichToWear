@@ -23,7 +23,7 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
                 navController.navigate(MainUiState.Closet.route)
               },
             icon = { Icon(Icons.Default.Home, contentDescription = "") },
-            label = { Text(text = MainUiState.Closet.route) },
+            label = { Text(text = "衣橱") },
         )
 
         NavigationBarItem(selected = uiState.route == MainUiState.Suit.route,
@@ -32,7 +32,7 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
                 navController.navigate(MainUiState.Suit.route)
               },
             icon = { Icon(Icons.Default.Notifications, contentDescription = "") },
-            label = { Text(text = MainUiState.Suit.route) })
+            label = { Text(text = "穿搭") })
 
         NavigationBarItem(selected = uiState.route == MainUiState.Wearing.route,
             onClick = {
@@ -40,7 +40,7 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
                 navController.navigate(MainUiState.Wearing.route)
             },
             icon = { Icon(Icons.Default.Menu, contentDescription = "") },
-            label = { Text(text = MainUiState.Wearing.route) })
+            label = { Text(text = "记录") })
         
         NavigationBarItem(selected = uiState.route == MainUiState.Memo.route,
             onClick = {

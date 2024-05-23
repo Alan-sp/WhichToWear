@@ -51,6 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.Navigation
 import com.android.whichtowear.R
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.util.getDateFormat
@@ -204,7 +205,7 @@ fun DetailScreenBottomAppBar(
                     contentDescription = "Add to outfit"
                 )
                 Box(modifier = Modifier.width(4.dp))
-                Text(text = "Add to wearing")
+                Text(text = "添加到今日穿搭")
             }
 //            Box(modifier = Modifier.width(16.dp))
 //            FilledTonalButton(
