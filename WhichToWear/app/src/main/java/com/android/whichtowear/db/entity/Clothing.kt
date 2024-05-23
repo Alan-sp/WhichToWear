@@ -33,6 +33,6 @@ data class Clothing(
         color = color
         )
     companion object{
-        fun empty() = Clothing(0, "", 0, 0.0f, 0, 0, 0)
+        fun empty() = Clothing(0, "", 0, 0.0f, 0, 0, 0,"#FFFFFF")
     }
 }

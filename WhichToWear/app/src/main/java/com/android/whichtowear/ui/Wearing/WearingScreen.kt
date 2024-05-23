@@ -66,7 +66,7 @@ fun WearingScreen(uiState: WearingUiState){
                             modifier = Modifier
                                 .align(Alignment.Center)
                                 .padding(16.dp),
-                            text = "Add a clothing to the wearings to appear here.",
+                            text = "暂无搭配穿搭",
                             textAlign = TextAlign.Center,
                             fontSize = 14.sp
                         )

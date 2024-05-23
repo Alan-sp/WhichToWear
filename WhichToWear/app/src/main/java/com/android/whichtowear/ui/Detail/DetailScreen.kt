@@ -206,33 +206,7 @@ fun DetailScreenBottomAppBar(
                 Box(modifier = Modifier.width(4.dp))
                 Text(text = "Add to wearing")
             }
-//            Box(modifier = Modifier.width(16.dp))
-//            FilledTonalButton(
-//                onClick = {
-//                }
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.laundry),
-//                    contentDescription = "Add to laundry"
-//                )
-//                Box(modifier = Modifier.width(4.dp))
-//                Text(text = "Add to laundry")
-//            }
         },
-//
-//        floatingActionButton = {
-//            ExtendedFloatingActionButton(
-//                expanded = false,
-//                text = { Text(text = "Edit") },
-//                icon = {
-//                    Icon(
-//                        imageVector = Icons.Outlined.Edit,
-//                        contentDescription = "Edit"
-//                    )
-//                },
-//                onClick = {}
-//            )
-//        }
     )
 }
 

@@ -10,7 +10,9 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import com.android.whichtowear.R
 import com.android.whichtowear.ui.Main.MainUiState
 
 @Composable
@@ -22,7 +24,12 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
                 updateUiState(MainUiState.Closet)
                 navController.navigate(MainUiState.Closet.route)
               },
-            icon = { Icon(Icons.Default.Home, contentDescription = "") },
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.closet),
+                    contentDescription = ""
+                )
+            },
             label = { Text(text = MainUiState.Closet.route) },
         )
 
@@ -31,7 +38,7 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
                 updateUiState(MainUiState.Suit)
                 navController.navigate(MainUiState.Suit.route)
               },
-            icon = { Icon(Icons.Default.Notifications, contentDescription = "") },
+            icon = { Icon(Icons.Default.AddTask, contentDescription = "")},
             label = { Text(text = MainUiState.Suit.route) })
 
         NavigationBarItem(selected = uiState.route == MainUiState.Wearing.route,
@@ -41,14 +48,6 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
             },
             icon = { Icon(Icons.Default.Menu, contentDescription = "") },
             label = { Text(text = MainUiState.Wearing.route) })
-        
-        NavigationBarItem(selected = uiState.route == MainUiState.Memo.route,
-            onClick = {
-                updateUiState(MainUiState.Memo)
-                navController.navigate(MainUiState.Memo.route)
-            },
-            icon = { Icon(Icons.Default.AddTask, contentDescription = "")},
-            label = {Text(text = MainUiState.Memo.route)}
-        )
+
     }
 }

@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -103,6 +104,7 @@ fun PhotoQuestion(
                         .fillMaxWidth()
                         .heightIn(96.dp)
                         .aspectRatio(4 / 3f)
+                        .align(Alignment.CenterHorizontally)
                 )
             } else {
                 PhotoDefaultImage(
@@ -110,6 +112,7 @@ fun PhotoQuestion(
                         horizontal = 86.dp,
                         vertical = 74.dp
                     )
+                        .align(Alignment.CenterHorizontally)
                 )
             }
             OutlinedButton(
