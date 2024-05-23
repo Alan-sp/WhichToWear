@@ -106,12 +106,15 @@ fun SliderQuestion(
 @DrawableRes
 fun getImageForSliderValue(value: Float): Int {
     return when (value) {
-//        5f -> R.drawable.frag
-//        1f -> R.drawable.lenz
-//        2f -> R.drawable.bug_of_chaos
+        0f -> R.drawable.vest
+        1f -> R.drawable.vest
+        2f -> R.drawable.vest
+        3f -> R.drawable.vest
+        8f -> R.drawable.stylish_jacket
+        9f -> R.drawable.stylish_jacket
+        10f -> R.drawable.stylish_jacket
 //        // 添加更多的滑块值和对应的图片资源
-//        else -> R.drawable.spark
-        else->R.drawable.closet
+        else -> R.drawable.t_shirt_with_lines
     }
 }
 

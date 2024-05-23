@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
@@ -195,45 +196,19 @@ fun DetailScreenBottomAppBar(
             FilledTonalButton(
                 onClick = {
                     addToWearing(clothing){
-                        Toast.makeText(context,"Added to wearing",Toast.LENGTH_SHORT)
+                        Toast.makeText(context,"添加完成",Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.closet),
-                    contentDescription = "Add to outfit"
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add"
                 )
                 Box(modifier = Modifier.width(4.dp))
                 Text(text = "添加到今日穿搭")
             }
-//            Box(modifier = Modifier.width(16.dp))
-//            FilledTonalButton(
-//                onClick = {
-//                }
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.laundry),
-//                    contentDescription = "Add to laundry"
-//                )
-//                Box(modifier = Modifier.width(4.dp))
-//                Text(text = "Add to laundry")
-//            }
         },
-//
-//        floatingActionButton = {
-//            ExtendedFloatingActionButton(
-//                expanded = false,
-//                text = { Text(text = "Edit") },
-//                icon = {
-//                    Icon(
-//                        imageVector = Icons.Outlined.Edit,
-//                        contentDescription = "Edit"
-//                    )
-//                },
-//                onClick = {}
-//            )
-//        }
     )
 }
 

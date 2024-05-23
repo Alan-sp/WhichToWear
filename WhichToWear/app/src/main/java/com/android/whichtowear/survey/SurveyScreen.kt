@@ -80,35 +80,6 @@ fun SurveyQuestionsScreen(
 }
 
 @Composable
-private fun SurveyResult(
-    title: String,
-    subtitle: String,
-    description: String,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(modifier = modifier.fillMaxSize()) {
-        item {
-            Spacer(modifier = Modifier.height(44.dp))
-            Text(
-                text = title,
-                style = MaterialTheme.typography.displaySmall,
-                modifier = Modifier.padding(horizontal = 20.dp)
-            )
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(20.dp)
-            )
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(horizontal = 20.dp)
-            )
-        }
-    }
-}
-
-@Composable
 private fun TopAppBarTitle(
     questionIndex: Int,
     totalQuestionsCount: Int,
@@ -214,7 +185,7 @@ fun SurveyBottomBar(
                         addClothing(cloth)
                         onDonePressed()
                     },
-                    //enabled = isNextButtonEnabled,
+                    enabled = isNextButtonEnabled,
                 ) {
                     Text(text = stringResource(id = R.string.done))
                 }
@@ -224,7 +195,7 @@ fun SurveyBottomBar(
                         .weight(1f)
                         .height(48.dp),
                     onClick = onNextPressed,
-                    //enabled = isNextButtonEnabled,
+                    enabled = isNextButtonEnabled,
                 ) {
                     Text(text = stringResource(id = R.string.next))
                 }

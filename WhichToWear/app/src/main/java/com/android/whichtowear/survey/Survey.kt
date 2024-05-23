@@ -1,6 +1,7 @@
 package com.android.whichtowear.survey
 
 import android.net.Uri
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
@@ -12,6 +13,7 @@ import com.android.whichtowear.survey.question.SingleChoiceQuestion
 import com.android.whichtowear.survey.question.SliderQuestion
 import com.android.whichtowear.survey.question.Superhero
 import com.android.whichtowear.ui.ImageColorPickerScreen
+import com.android.whichtowear.ui.Main.MainUiState.Closet.icon
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 
 @Composable
@@ -48,9 +50,9 @@ fun SuperheroQuestion(
         titleResourceId = R.string.pick_superhero,
         directionsResourceId = R.string.select_one,
         possibleAnswers = listOf(
-            Superhero(0,R.string.shirts, R.drawable.lenz),
-            Superhero(1,R.string.pants, R.drawable.bug_of_chaos),
-            Superhero(2,R.string.shoes, R.drawable.spark),
+            Superhero(0,R.string.shirts, R.drawable.t_shirt),
+            Superhero(1,R.string.pants, R.drawable.shorts),
+            Superhero(2,R.string.shoes, R.drawable.slippers),
         ),
         selectedAnswer = selectedAnswer,
         onOptionSelected = onOptionSelected,
