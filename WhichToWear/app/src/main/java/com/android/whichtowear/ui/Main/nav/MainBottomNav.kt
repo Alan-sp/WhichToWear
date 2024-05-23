@@ -3,6 +3,7 @@ package com.android.whichtowear.ui.Main.nav
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddTask
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
@@ -24,13 +25,13 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
                 updateUiState(MainUiState.Closet)
                 navController.navigate(MainUiState.Closet.route)
               },
+            label = { Text(text = "衣橱") },
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.closet),
                     contentDescription = ""
                 )
             },
-            label = { Text(text = MainUiState.Closet.route) },
         )
 
         NavigationBarItem(selected = uiState.route == MainUiState.Suit.route,
@@ -38,16 +39,15 @@ fun MainBottomNav(navController: NavController, uiState: MainUiState, updateUiSt
                 updateUiState(MainUiState.Suit)
                 navController.navigate(MainUiState.Suit.route)
               },
+            label = { Text(text = "穿搭") },
             icon = { Icon(Icons.Default.AddTask, contentDescription = "")},
-            label = { Text(text = MainUiState.Suit.route) })
-
+        )
         NavigationBarItem(selected = uiState.route == MainUiState.Wearing.route,
             onClick = {
                 updateUiState(MainUiState.Wearing)
                 navController.navigate(MainUiState.Wearing.route)
             },
             icon = { Icon(Icons.Default.Menu, contentDescription = "") },
-            label = { Text(text = MainUiState.Wearing.route) })
-
+            label = { Text(text = "记录") })
     }
 }

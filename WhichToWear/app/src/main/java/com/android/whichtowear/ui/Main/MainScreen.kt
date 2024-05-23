@@ -70,7 +70,7 @@ fun MainScreen(
                 tabState?.let { it1 ->
                     ClosetScreen(
                         uiState = closetUiState,
-                        TabUiState = it1,
+                        tabUiState = it1,
                         changeTabUiState = closetViewModel::changeTabUiState,
                         navigate = navigate
                     )
@@ -87,6 +87,7 @@ fun MainScreen(
                     weatherState = weatherState,
                     changeWeatherState = suitViewModel::changeWeatherState,
                     navigate = navigate,
+                    addToWearings = suitViewModel::addToWearings,
                     updatePhotos = suitViewModel::updatePhotos,
                 )
             }

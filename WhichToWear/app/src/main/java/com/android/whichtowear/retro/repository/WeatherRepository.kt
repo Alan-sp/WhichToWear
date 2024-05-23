@@ -24,7 +24,7 @@ class WeatherRepository @Inject constructor(
             res = response.body()?.string()!!
 //            Log.d("WeatherRepository", "getWeather: $res")
         }
-        sleep(2000)
+//        sleep(2000)
         Log.d("WeatherRepository", "getWeather: $res")
         return res
     }

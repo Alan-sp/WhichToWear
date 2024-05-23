@@ -44,7 +44,7 @@ import timber.log.Timber
 @Composable
 fun ClosetScreen(
     uiState: ClosetUiState,
-    TabUiState: Int,
+    tabUiState: Int,
     changeTabUiState: (Int) -> Unit,
     navigate: (String) -> Unit
 ) {
@@ -52,19 +52,19 @@ fun ClosetScreen(
         topBar = {
             Column() {
                 TopAppBar(title = { Text(text = "我的衣橱") })
-                TabRow(selectedTabIndex = TabUiState) {
+                TabRow(selectedTabIndex = tabUiState) {
                     Tab(
-                        selected = TabUiState == 0,
+                        selected = tabUiState == 0,
                         onClick = { changeTabUiState(0) },
                         text = { Text(text = "上衣") }
                     )
                     Tab(
-                        selected = TabUiState == 1,
+                        selected = tabUiState == 1,
                         onClick = { changeTabUiState(1) },
                         text = { Text(text = " 裤子") }
                     )
                     Tab(
-                        selected = TabUiState == 2,
+                        selected = tabUiState == 2,
                         onClick = { changeTabUiState(2) },
                         text = { Text(text = "鞋子") }
                     )
@@ -103,7 +103,7 @@ fun ClosetScreen(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         content = {
                             itemsIndexed(uiState.photos) { index, photo ->
-                                if(photo.type == TabUiState) {
+                                if(photo.type == tabUiState) {
                                     GlideImage(
                                         model = photo.image,
                                         contentScale = ContentScale.Crop,

@@ -90,6 +90,12 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import java.util.*
 
+
+//fun getLocationCityName(context: Context, location: Location): String? {
+//    val geocoder = Geocoder(context, Locale.getDefault())
+//    val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+//    return addresses[0].locality
+//}
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "DiscouragedApi")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
@@ -99,10 +105,12 @@ fun SuitScreen(
     weatherState: Weather,
     changeWeatherState:(Location) -> Unit,
     updatePhotos: (List<Clothing>) -> Unit,
+    addToWearings: (List<Clothing>) -> Unit,
     navigate: (String) -> Unit
 ) {
 
     val context = LocalContext.current
+    var isin by remember { mutableStateOf(0) }
     var location by remember { mutableStateOf<Location?>(null) }
     var cityName by remember { mutableStateOf<String?>(null) }
     var isPressed by remember { mutableStateOf(false) }
@@ -121,6 +129,13 @@ fun SuitScreen(
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
     }
+    val todayList = selectPhotos(
+        allState as ClosetUiState.PhotoList,
+        weatherState,
+        isSport,
+        isMeet,
+        isColor
+    )
 
     LaunchedEffect(locationManager) {
         if (ActivityCompat.checkSelfPermission(
@@ -151,17 +166,24 @@ fun SuitScreen(
         )
     }
 
-    if(weatherState == Weather.empty()) {
+    if(weatherState == Weather.empty()  &&
+            ActivityCompat.checkSelfPermission(
+                    context,
+        Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        ) {
         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 //                    cityName = g
 //    Shirt =etLocationCityName(context, location) ?: "Unknown"
 //                    Log.d("CityName", "${location!!.latitude}")
         location?.let { it1 -> changeWeatherState(it1) }
     }
-
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "搭配") })
+            TopAppBar(title = { Text(text = "今日穿搭") })
         },
     ) {
         Box(
@@ -184,42 +206,56 @@ fun SuitScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(modifier = Modifier.padding(vertical = 16.dp)) {
-                    Column {
-//                        Box(modifier = Modifier.size(16.dp))
-                        Text(
-                            text = weatherState.info + "   ${(weatherState.temp- 273.15).toInt()} ℃",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 40.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
-                                .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
-                        )
-                        Image(
-                            painter = painterResource(id = resID),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
-                                .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
-                        )
-                        Text(
-                            text = "湿度：${weatherState.wet}%   风速：${weatherState.wind} m/s",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
-                                .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
-                        )
+                if(weatherState != Weather.empty()) {
+                    Column(modifier = Modifier.padding(vertical = 16.dp)) {
+                        Column {
+                            //                        Box(modifier = Modifier.size(16.dp))
+                            Text(
+                                text = weatherState.info + "   ${(weatherState.temp - 273.15).toInt()} ℃",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 40.sp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                    .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                            )
+                            Image(
+                                painter = painterResource(id = resID),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                    .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                            )
+                            Text(
+                                text = "湿度：${weatherState.wet}%   风速：${weatherState.wind} m/s",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                    .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                            )
+                        }
+                        Box(modifier = Modifier.size(16.dp))
                     }
-                    Box(modifier = Modifier.size(16.dp))
+                }
+                else
+                {
+                    Text(
+                        text = if(isin < 10) "天气获取中……请稍候"
+                        else "获取失败，请检查网络重试",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                            .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                    )
                 }
 
                 Text(
                     text = "今日活动：",
-//                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentSize(Alignment.CenterStart),
@@ -229,8 +265,8 @@ fun SuitScreen(
                     fontSize = 20.sp,
                 )
                 CheckboxRow(text = "今日是否有运动安排",
-                            selected = isSport,
-                            onOptionSelected = { isSport = !isSport })
+                    selected = isSport,
+                    onOptionSelected = { isSport = !isSport })
                 CheckboxRow(text = "今日是否参加正式场合",
                     selected = isMeet,
                     onOptionSelected = { isMeet = !isMeet })
@@ -255,7 +291,7 @@ fun SuitScreen(
                         isPressed = true
                     }
                     ) {
-                        Text("生成今日搭配")
+                        Text("生成今日穿搭")
                     }
                 }
                 else
@@ -266,19 +302,15 @@ fun SuitScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Button(onClick = {
-                            updatePhotos(selectPhotos(allState as ClosetUiState.PhotoList,
-                                weatherState,
-                                isSport,
-                                isMeet,
-                                isColor
-                            ))
+                            updatePhotos(todayList)
                             isPressed = true
                         }) {
-                                Text("重新生成")
+                            Text("重新生成")
                         }
                         Spacer(modifier = Modifier.size(20.dp))
                         Button(onClick = {
-                            }) {
+                            addToWearings(todayList)
+                        }) {
                             Text("添加至今日穿搭")
                         }
                     }
@@ -399,12 +431,24 @@ fun selectPhotos(
     shirtList.addAll((uiState.photos.filter { it.type == 0 && weatherState.temp + it.warmth >= 30 }).toMutableList())
     pantsList.addAll((uiState.photos.filter { it.type == 1 && weatherState.temp + it.warmth >= 30}).toMutableList())
     shoesList.addAll((uiState.photos.filter { it.type == 2 && weatherState.temp + it.warmth >= 30}).toMutableList())
-    Shirt = if(shirtList.isNotEmpty()) shirtList.random()
-    else uiState.photos.filter { it.type == 0 }.random()
-    Pants = if(pantsList.isNotEmpty()) pantsList.random()
-    else uiState.photos.filter { it.type == 1 }.random()
-    Shoes = if(shoesList.isNotEmpty()) shoesList.random()
-    else uiState.photos.filter { it.type == 2 }.random()
+    if(shirtList.isEmpty())
+    {
+        shirtList.add(Clothing.empty())
+        shirtList.addAll((uiState.photos.filter{ it.type == 0 }.toMutableList()))
+    }
+    if(pantsList.isEmpty())
+    {
+        pantsList.add(Clothing.empty())
+        pantsList.addAll((uiState.photos.filter{ it.type == 1 }.toMutableList()))
+    }
+    if(shoesList.isEmpty())
+    {
+        shoesList.add(Clothing.empty())
+        shoesList.addAll((uiState.photos.filter{ it.type == 2 }.toMutableList()))
+    }
+    Shirt = shirtList.random()
+    Pants = pantsList.random()
+    Shoes = shoesList.random()
     if(Shirt != Clothing.empty()) resList.add(Shirt)
     if(Pants != Clothing.empty()) resList.add(Pants)
     if(Shoes != Clothing.empty()) resList.add(Shoes)

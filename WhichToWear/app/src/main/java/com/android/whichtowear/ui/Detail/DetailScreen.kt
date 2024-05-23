@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
@@ -51,6 +52,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.Navigation
 import com.android.whichtowear.R
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.util.getDateFormat
@@ -194,18 +196,18 @@ fun DetailScreenBottomAppBar(
             FilledTonalButton(
                 onClick = {
                     addToWearing(clothing){
-                        Toast.makeText(context,"Added to wearing",Toast.LENGTH_SHORT)
+                        Toast.makeText(context,"添加完成",Toast.LENGTH_SHORT)
                             .show()
                     }
                 },
 
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.closet),
-                    contentDescription = ""
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add"
                 )
                 Box(modifier = Modifier.width(4.dp))
-                Text(text = "加入今日穿搭")
+                Text(text = "添加到今日穿搭")
             }
         },
 
