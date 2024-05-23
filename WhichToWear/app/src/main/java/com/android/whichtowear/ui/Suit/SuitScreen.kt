@@ -166,7 +166,7 @@ fun SuitScreen(
         )
     }
 
-    if(weatherState == Weather.empty() && isin < 10 &&
+    if(weatherState == Weather.empty()  &&
             ActivityCompat.checkSelfPermission(
                     context,
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -180,7 +180,6 @@ fun SuitScreen(
 //    Shirt =etLocationCityName(context, location) ?: "Unknown"
 //                    Log.d("CityName", "${location!!.latitude}")
         location?.let { it1 -> changeWeatherState(it1) }
-        isin += 1
     }
     Scaffold(
         topBar = {
