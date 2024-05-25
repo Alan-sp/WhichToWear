@@ -25,7 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 //import com.android.whichtowear.survey.SurveyResultScreen
-import com.android.whichtowear.survey.SurveyRoute
+import com.android.whichtowear.ui.survey.SurveyRoute
 import com.android.whichtowear.ui.Detail.DetailScreen
 import com.android.whichtowear.ui.Detail.DetailViewModel
 import com.android.whichtowear.ui.theme.WhichToWearTheme
@@ -100,12 +100,6 @@ fun HomeScreen()
                 onNavUp = navController::navigateUp,
             )
         }
-
-//        composable("surveyresults") {
-//            SurveyResultScreen{
-//                navController.popBackStack("main", false)
-//            }
-//        }
 
         composable(
             "detail/{clothId}",

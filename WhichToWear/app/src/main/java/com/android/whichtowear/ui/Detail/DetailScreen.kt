@@ -236,7 +236,6 @@ private fun DetailScreenImage(modifier: Modifier = Modifier, image: String) {
 fun getPoints(clothing: Clothing):String
 {
     var points = ""
-    Log.d("DEBUG",clothing.points.toString())
     if(clothing.points.and(1) == 1)
     {
         points += stringResource(R.string.read)

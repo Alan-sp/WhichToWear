@@ -36,8 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.whichtowear.R
-import com.android.whichtowear.survey.ColorPicker.PhotoPickerIcon
-import com.android.whichtowear.survey.QuestionWrapper
+import com.android.whichtowear.ui.survey.ColorPicker.PhotoPickerIcon
+import com.android.whichtowear.ui.survey.QuestionWrapper
 import com.android.whichtowear.ui.theme.WhichToWearTheme
 import com.github.skydoves.colorpicker.compose.AlphaSlider
 import com.github.skydoves.colorpicker.compose.AlphaTile
@@ -72,7 +72,6 @@ fun ImageColorPickerScreen(
             }
             paletteImageBitmap = bitmap
         }
-        //delay(100000)
         isLoaded = true
     }
 
@@ -83,7 +82,6 @@ fun ImageColorPickerScreen(
     ){
         if(isLoaded){
             Column {
-                //Spacer(modifier = Modifier.weight(1f))
                 PhotoPickerIcon(controller)
 
 

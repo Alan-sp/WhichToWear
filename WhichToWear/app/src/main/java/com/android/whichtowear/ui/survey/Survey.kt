@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey
+package com.android.whichtowear.ui.survey
 
 import android.net.Uri
 import androidx.compose.material.icons.Icons
@@ -6,12 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import com.android.whichtowear.R
-import com.android.whichtowear.survey.question.DateQuestion
-import com.android.whichtowear.survey.question.MultipleChoiceQuestion
-import com.android.whichtowear.survey.question.PhotoQuestion
-import com.android.whichtowear.survey.question.SingleChoiceQuestion
-import com.android.whichtowear.survey.question.SliderQuestion
-import com.android.whichtowear.survey.question.Superhero
+import com.android.whichtowear.ui.survey.question.DateQuestion
+import com.android.whichtowear.ui.survey.question.MultipleChoiceQuestion
+import com.android.whichtowear.ui.survey.question.PhotoQuestion
+import com.android.whichtowear.ui.survey.question.SingleChoiceQuestion
+import com.android.whichtowear.ui.survey.question.SliderQuestion
+import com.android.whichtowear.ui.survey.question.Superhero
 import com.android.whichtowear.ui.ImageColorPickerScreen
 import com.android.whichtowear.ui.Main.MainUiState.Closet.icon
 import com.github.skydoves.colorpicker.compose.ColorEnvelope

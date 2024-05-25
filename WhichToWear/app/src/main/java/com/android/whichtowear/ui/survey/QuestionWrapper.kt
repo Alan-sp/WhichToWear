@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey
+package com.android.whichtowear.ui.survey
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background

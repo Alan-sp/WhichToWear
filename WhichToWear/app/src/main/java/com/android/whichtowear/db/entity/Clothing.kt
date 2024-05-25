@@ -17,7 +17,6 @@ data class Clothing(
     @ColumnInfo(name = "date") val date: Long = 0,
     @ColumnInfo(name = "points") val points: Int = 0,
     @ColumnInfo(name = "color") val color : String,
-    //@ColumnInfo(name = "color") val color: ColorEnvelope = ColorEnvelope(Color.White,"#FFFFFF",false),
 ){
     constructor(image: String,
                 warmth: Float = 0.0f,

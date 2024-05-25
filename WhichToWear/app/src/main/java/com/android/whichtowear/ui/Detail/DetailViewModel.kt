@@ -18,8 +18,6 @@ sealed class DetailUiState {
     object Error : DetailUiState()
     data class OpenDetail(
         val clothing: Clothing,
-        //val laundryCount: Int? = null,
-        //val lastLaundryDate: Long? = null
     ) : DetailUiState()
 }
 
@@ -53,13 +51,6 @@ class DetailViewModel @Inject constructor(
             onComplete()
         }
     }
-
-//    fun addToLaundry(onComplete: () -> Unit) {
-//        viewModelScope.launch {
-//            detailRepository.addLaundry(clothingId)
-//            onComplete()
-//        }
-//    }
 
     fun delete(onDelete: () -> Unit) {
         viewModelScope.launch {

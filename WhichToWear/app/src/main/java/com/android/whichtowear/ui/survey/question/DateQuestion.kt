@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey.question
+package com.android.whichtowear.ui.survey.question
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.whichtowear.R
-import com.android.whichtowear.survey.QuestionWrapper
-import com.android.whichtowear.survey.simpleDateFormatPattern
+import com.android.whichtowear.ui.survey.QuestionWrapper
+import com.android.whichtowear.ui.survey.simpleDateFormatPattern
 import com.android.whichtowear.ui.theme.WhichToWearTheme
 import com.android.whichtowear.ui.theme.slightlyDeemphasizedAlpha
 import com.android.whichtowear.util.getDefaultDateInMillis
@@ -41,7 +41,7 @@ fun DateQuestion(
         directionsResourceId = directionsResourceId,
         modifier = modifier,
     ) {
-        // All times are stored in UTC, so generate the display from UTC also
+
         val dateFormat = SimpleDateFormat(simpleDateFormatPattern, Locale.getDefault())
         dateFormat.timeZone = TimeZone.getTimeZone("UTC")
         val dateString = dateFormat.format(dateInMillis ?: getDefaultDateInMillis())

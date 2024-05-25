@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey.ColorPicker
+package com.android.whichtowear.ui.survey.ColorPicker
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

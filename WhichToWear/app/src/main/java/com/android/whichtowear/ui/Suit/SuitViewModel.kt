@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import javax.inject.Inject
 
-//import com.android.whichtowear.retro.data.Weather
 @HiltViewModel
 class SuitViewModel @Inject constructor(
     private val weatherepository: WeatherRepository,

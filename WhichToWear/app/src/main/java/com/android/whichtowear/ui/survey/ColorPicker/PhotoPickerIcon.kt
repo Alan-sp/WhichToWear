@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey.ColorPicker
+package com.android.whichtowear.ui.survey.ColorPicker
 
 import android.annotation.SuppressLint
 import android.graphics.ImageDecoder

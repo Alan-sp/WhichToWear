@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey.question
+package com.android.whichtowear.ui.survey.question
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.android.whichtowear.R
-import com.android.whichtowear.survey.QuestionWrapper
+import com.android.whichtowear.ui.survey.QuestionWrapper
 import com.android.whichtowear.ui.theme.WhichToWearTheme
 import timber.log.Timber
 

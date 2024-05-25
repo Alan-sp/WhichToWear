@@ -17,9 +17,6 @@ class DetailRepositoryImpl @Inject constructor(
         clothingDao.GetWithId(id)
     }
 
-    //fun getLaundry(clothingId: Int): Flow<List<Laundry>>
-
-    //suspend fun addLaundry(id: Int)
     override suspend fun deleteClothing(id: Int) = withContext(dispatcher){
         clothingDao.DeleteWithId(id)
     }

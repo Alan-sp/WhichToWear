@@ -9,7 +9,7 @@ import com.android.whichtowear.db.dao.WearingDao
 import com.android.whichtowear.db.repository.ClothingRespository
 import com.android.whichtowear.db.repository.DetailRepository
 import com.android.whichtowear.db.repository.WearingRepository
-import com.android.whichtowear.survey.PhotoUriManager
+import com.android.whichtowear.ui.survey.PhotoUriManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,7 +42,7 @@ object RepositoryModule {
     @Singleton
     fun providePhotoUriManager(
         @ApplicationContext appContext: Context
-    ): PhotoUriManager{
+    ): PhotoUriManager {
         return PhotoUriManager(appContext)
     }
 }

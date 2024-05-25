@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey
+package com.android.whichtowear.ui.survey
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.db.repository.ClothingRespository
-import com.android.whichtowear.survey.question.Superhero
+import com.android.whichtowear.ui.survey.question.Superhero
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -100,7 +100,6 @@ class SurveyViewModel @Inject constructor(
     }
 
     fun onDonePressed(onSurveyComplete: () -> Unit) {
-        // Here is where you could validate that the requirements of the survey are complete
         onSurveyComplete()
     }
 

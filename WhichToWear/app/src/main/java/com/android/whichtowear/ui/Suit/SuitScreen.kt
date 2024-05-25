@@ -60,7 +60,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -86,16 +89,10 @@ import androidx.core.app.ActivityCompat
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.retro.data.Weather
 import com.android.whichtowear.ui.Closet.ClosetUiState
+import com.android.whichtowear.util.selectPhotos
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import java.util.*
-
-
-//fun getLocationCityName(context: Context, location: Location): String? {
-//    val geocoder = Geocoder(context, Locale.getDefault())
-//    val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-//    return addresses[0].locality
-//}
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "DiscouragedApi")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
@@ -124,7 +121,6 @@ fun SuitScreen(
     val locationListener = object : LocationListener {
         override fun onLocationChanged(loc: Location) {
             location = loc
-//            cityName = getLocationCityName(context,loc)
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -168,9 +164,6 @@ fun SuitScreen(
         ) == PackageManager.PERMISSION_GRANTED
     ) {
         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-//                    cityName = g
-//    Shirt =etLocationCityName(context, location) ?: "Unknown"
-//                    Log.d("CityName", "${location!!.latitude}")
         location?.let { it1 -> changeWeatherState(it1) }
     }
     Scaffold(
@@ -191,157 +184,181 @@ fun SuitScreen(
                     )
                 )
         ) {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .padding(horizontal = 16.dp),
+//                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if(weatherState != Weather.empty()) {
-                    Column(modifier = Modifier.padding(vertical = 16.dp)) {
-                        Column {
-                            //                        Box(modifier = Modifier.size(16.dp))
-                            Text(
-                                text = weatherState.info + "   ${(weatherState.temp - 273.15).toInt()} ℃",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 35.sp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
-                                    .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
-                            )
-                            Image(
-                                painter = painterResource(id = resID),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
-                                    .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
-                            )
-                            Text(
-                                text = "湿度：${weatherState.wet}%   风速：${weatherState.wind} m/s",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
-                                    .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
-                            )
-                        }
-                        Box(modifier = Modifier.size(16.dp))
-                    }
-                }
-                else
-                {
+                item{
                     Text(
-                        text = if(isin < 10) "天气获取中……请稍候"
-                        else "获取失败，请检查网络重试",
+                        text = "当前位置：${weatherState.main}",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
+                        fontSize = 25.sp,
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
                             .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
                     )
                 }
+                item{
+                    if(weatherState != Weather.empty()) {
+                        Column(modifier = Modifier.padding(vertical = 16.dp)) {
+                            Column {
+                                //                        Box(modifier = Modifier.size(16.dp))
+                                Text(
+                                    text = weatherState.info + "   ${(weatherState.temp - 273.15).toInt()} ℃",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 35.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                        .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                                )
+                                Image(
+                                    painter = painterResource(id = resID),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                        .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                                )
+                                Text(
+                                    text = "湿度：${weatherState.wet}%   风速：${weatherState.wind} m/s",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                        .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                                )
+                            }
+                            Box(modifier = Modifier.size(16.dp))
+                        }
+                    }
+                    else
+                    {
+                        Text(
+                            text = if (isin < 10) "天气获取中…请稍候"
+                            else "获取失败，请检查网络重试",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(align = Alignment.CenterVertically)  //设置竖直居中
+                                .wrapContentWidth(align = Alignment.CenterHorizontally) //设置水平居中
+                        )
+                    }
+                }
 
-                Text(
-                    text = "今日活动：",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentSize(Alignment.CenterStart),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Start,
+                item{
+                    Text(
+                        text = "今日活动：",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentSize(Alignment.CenterStart),
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Start,
 //                    layoutDirection = LayoutDirection.Ltr,
-                    fontSize = 20.sp,
-                )
-                CheckboxRow(text = "今日是否有运动安排",
-                    selected = isSport,
-                    onOptionSelected = { isSport = !isSport })
-                CheckboxRow(text = "今日是否参加正式场合",
-                    selected = isMeet,
-                    onOptionSelected = { isMeet = !isMeet })
-                CheckboxRow(text = "今日是否有社交活动",
-                    selected = isColor,
-                    onOptionSelected = { isColor = !isColor })
+                        fontSize = 20.sp,
+                    )
+                    CheckboxRow(text = "今日是否有运动安排",
+                        selected = isSport,
+                        onOptionSelected = { isSport = !isSport })
+                    CheckboxRow(text = "今日是否参加正式场合",
+                        selected = isMeet,
+                        onOptionSelected = { isMeet = !isMeet })
+                    CheckboxRow(text = "今日是否有社交活动",
+                        selected = isColor,
+                        onOptionSelected = { isColor = !isColor })
+                }
 //                Card(
 //                    modifier = Modifier.fillMaxWidth(),
 //                    shape = RoundedCornerShape(4.dp)
 //                ) {
 //                }
-                if(!isPressed)
-                {
-                    Button(onClick = {
-                        updatePhotos(selectPhotos(
-                            allState as ClosetUiState.PhotoList,
-                            weatherState,
-                            isSport,
-                            isMeet,
-                            isColor
-                        ))
-                        isPressed = true
-                    }
-                    ) {
-                        Text("生成今日穿搭")
-                    }
-                }
-                else
-                {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
+                item{
+                    if (!isPressed) {
                         Button(onClick = {
-                            updatePhotos(selectPhotos(
-                                allState as ClosetUiState.PhotoList,
-                                weatherState,
-                                isSport,
-                                isMeet,
-                                isColor
-                            ))
+                            updatePhotos(
+                                selectPhotos(
+                                    allState as ClosetUiState.PhotoList,
+                                    weatherState,
+                                    isSport,
+                                    isMeet,
+                                    isColor
+                                )
+                            )
                             isPressed = true
-                        }) {
-                            Text("重新生成")
                         }
-                        Spacer(modifier = Modifier.size(20.dp))
-                        Button(onClick = {
-                            if(uiState is ClosetUiState.PhotoList) {
-                                addToWearings(uiState.photos)
+                        ) {
+                            Text("生成今日穿搭")
+                        }
+                    } else {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Button(onClick = {
+                                updatePhotos(
+                                    selectPhotos(
+                                        allState as ClosetUiState.PhotoList,
+                                        weatherState,
+                                        isSport,
+                                        isMeet,
+                                        isColor
+                                    )
+                                )
+                                isPressed = true
+                            }) {
+                                Text("重新生成")
                             }
-                        }) {
-                            Text("添加至今日穿搭")
+                            Spacer(modifier = Modifier.size(20.dp))
+                            Button(onClick = {
+                                if (uiState is ClosetUiState.PhotoList) {
+                                    addToWearings(uiState.photos)
+                                }
+                            }) {
+                                Text("添加至今日穿搭")
+                            }
                         }
                     }
                 }
 
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(4.dp)
-                ) {
-                    if(uiState is ClosetUiState.PhotoList) {
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(minSize = 80.dp),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            content = {
-                                itemsIndexed(uiState.photos) { index, photo ->
-                                    GlideImage(
-                                        model = photo.image,
-                                        contentScale = ContentScale.Crop,
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .aspectRatio(1f / 1.6f)
-                                            .clip(shape = RoundedCornerShape(4.dp))
-                                            .clickable {
-                                                navigate("detail/${photo.id}")
-                                            }
-                                    )
-                                }
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(4.dp)
+                    ) {
+                        if (uiState is ClosetUiState.PhotoList) {
+                            LazyRow(
+//                                columns = GridCells.Adaptive(minSize = 80.dp),
+//                                verticalArrangement = Arrangement.spacedBy(4.dp),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                content = {
+                                    itemsIndexed(uiState.photos) { index, photo ->
+                                        GlideImage(
+                                            model = photo.image,
+                                            contentScale = ContentScale.Crop,
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .height(140.dp)
+                                                .width(100.dp)
+                                                .aspectRatio(1f / 1.6f)
+                                                .clip(shape = RoundedCornerShape(4.dp))
+                                                .clickable {
+                                                    navigate("detail/${photo.id}")
+                                                }
+                                        )
+                                    }
+                                },
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
                     }
                 }
             }
@@ -387,70 +404,4 @@ fun CheckboxRow(
             }
         }
     }
-}
-
-fun selectPhotos(
-    uiState: ClosetUiState.PhotoList,
-    weatherState: Weather,
-    isSport: Boolean,
-    isMeet: Boolean,
-    isColor: Boolean
-):List<Clothing>
-{
-    val resList = mutableListOf<Clothing>()
-    var Shirt = Clothing.empty()
-    var Pants = Clothing.empty()
-    var Shoes = Clothing.empty()
-    var shirtList = mutableListOf<Clothing>()
-    var pantsList = mutableListOf<Clothing>()
-    var shoesList = mutableListOf<Clothing>()
-    if(isSport)
-    {
-        shirtList.addAll((uiState.photos.filter { it.type == 0 && (it.points.and(1) == 1) }).toMutableList())
-        pantsList.addAll((uiState.photos.filter { it.type == 1 && (it.points.and(1) == 1) }).toMutableList())
-        shoesList.addAll((uiState.photos.filter { it.type == 2 && (it.points.and(1) == 1) }).toMutableList())
-    }
-    if(isMeet)
-    {
-        shirtList.addAll((uiState.photos.filter { it.type == 0 && (it.points.and(64) == 64) }).toMutableList())
-        pantsList.addAll((uiState.photos.filter { it.type == 1 && (it.points.and(64) == 64) }).toMutableList())
-        shoesList.addAll((uiState.photos.filter { it.type == 2 && (it.points.and(64) == 64) }).toMutableList())
-        if(Shirt == Clothing.empty())
-            shirtList.addAll(uiState.photos.filter { it.type == 0 && (it.points.and(32) == 32)}.toMutableList())
-        if(Pants == Clothing.empty())
-            pantsList.addAll(uiState.photos.filter { it.type == 1 && (it.points.and(32) == 32)}.toMutableList())
-        if(Shoes == Clothing.empty())
-            shoesList.addAll(uiState.photos.filter { it.type == 2 && (it.points.and(32) == 32)}.toMutableList())
-    }
-    if(isColor)
-    {
-        shirtList.addAll((uiState.photos.filter { it.type == 0 && (it.points.and(16) == 16) }).toMutableList())
-        pantsList.addAll((uiState.photos.filter { it.type == 1 && (it.points.and(16) == 16) }).toMutableList())
-        shoesList.addAll((uiState.photos.filter { it.type == 2 && (it.points.and(16) == 16) }).toMutableList())
-    }
-    shirtList.addAll((uiState.photos.filter { it.type == 0 && weatherState.temp + it.warmth >= 30 }).toMutableList())
-    pantsList.addAll((uiState.photos.filter { it.type == 1 && weatherState.temp + it.warmth >= 30}).toMutableList())
-    shoesList.addAll((uiState.photos.filter { it.type == 2 && weatherState.temp + it.warmth >= 30}).toMutableList())
-    if(shirtList.isEmpty())
-    {
-        shirtList.add(Clothing.empty())
-        shirtList.addAll((uiState.photos.filter{ it.type == 0 }.toMutableList()))
-    }
-    if(pantsList.isEmpty())
-    {
-        pantsList.add(Clothing.empty())
-        pantsList.addAll((uiState.photos.filter{ it.type == 1 }.toMutableList()))
-    }
-    if(shoesList.isEmpty())
-    {
-        shoesList.add(Clothing.empty())
-        shoesList.addAll((uiState.photos.filter{ it.type == 2 }.toMutableList()))
-    }
-    Shirt = shirtList.random()
-    Pants = pantsList.random()
-    Shoes = shoesList.random()
-    if(Shirt != Clothing.empty()) resList.add(Shirt)
-    if(Pants != Clothing.empty()) resList.add(Pants)
-    if(Shoes != Clothing.empty()) resList.add(Shoes)
-    return resList
 }

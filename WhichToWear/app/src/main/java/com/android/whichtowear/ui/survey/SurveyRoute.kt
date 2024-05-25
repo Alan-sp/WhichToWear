@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey
+package com.android.whichtowear.ui.survey
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -32,9 +32,6 @@ import java.util.Calendar
 
 private const val CONTENT_ANIMATION_DURATION = 300
 
-/**
- * Displays a [SurveyQuestionsScreen] tied to the passed [SurveyViewModel]
- */
 @Composable
 fun SurveyRoute(
     onSurveyComplete: () -> Unit,

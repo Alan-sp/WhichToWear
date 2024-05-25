@@ -7,7 +7,6 @@ interface ClothingRespository{
     fun GetAll(): Flow<List<Clothing>>
     suspend fun InsertAll(clothingList: List<Clothing>)
     suspend fun Get(id: Int): Clothing
-
     suspend fun DeleteClothing(id: Int): Int
 }
 

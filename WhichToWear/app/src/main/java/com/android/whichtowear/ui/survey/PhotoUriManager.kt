@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey
+package com.android.whichtowear.ui.survey
 
 import android.content.Context
 import android.net.Uri

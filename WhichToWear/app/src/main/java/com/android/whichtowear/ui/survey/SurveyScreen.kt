@@ -1,4 +1,4 @@
-package com.android.whichtowear.survey
+package com.android.whichtowear.ui.survey
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Column
@@ -158,9 +158,6 @@ fun SurveyBottomBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                // Since we're not using a Material component but we implement our own bottom bar,
-                // we will also need to implement our own edge-to-edge support. Similar to the
-                // NavigationBar, we add the horizontal and bottom padding if it hasn't been consumed yet.
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
                 .padding(horizontal = 16.dp, vertical = 20.dp)
         ) {

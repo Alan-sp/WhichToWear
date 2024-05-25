@@ -8,11 +8,9 @@ import javax.inject.Inject
 
 sealed class MainUiState(val route:String,val icon:Int)
 {
-//    companion object{
     object Closet : MainUiState("closet",1)
     object Suit : MainUiState("suit",1)
     object Wearing : MainUiState("wearing",1)
-//    }
 }
 @HiltViewModel
 class MainViewModel @Inject constructor(): ViewModel()

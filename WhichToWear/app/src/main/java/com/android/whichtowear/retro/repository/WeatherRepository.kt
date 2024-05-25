@@ -22,10 +22,7 @@ class WeatherRepository @Inject constructor(
             val result: Call<ResponseBody> = weatherApi.getValue(location.latitude,location.longitude, apiKey)
             val response: Response<ResponseBody> = result.execute()
             res = response.body()?.string()!!
-//            Log.d("WeatherRepository", "getWeather: $res")
         }
-//        sleep(2000)
-        Log.d("WeatherRepository", "getWeather: $res")
         return res
     }
 }

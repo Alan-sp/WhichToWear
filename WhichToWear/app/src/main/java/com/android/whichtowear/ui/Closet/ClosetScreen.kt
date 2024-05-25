@@ -96,7 +96,6 @@ fun ClosetScreen(
         ) {
             if (uiState is ClosetUiState.PhotoList) {
                 if (uiState.photos.isNotEmpty()) {
-                    Log.d("number", "${uiState.photos.size}")
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(minSize = 80.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
