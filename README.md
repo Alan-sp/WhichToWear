@@ -5,6 +5,7 @@
   <a href="https://android-arsenal.com/api?level=29"><img alt="API" src="https://img.shields.io/badge/API-29%2B-brightgreen.svg?style=flat"/></a>
 </p>
 
+北京理工大学安卓大作业
 ## 1、架构设计
 **Clean Android Architect**  
 以Sui为例  
