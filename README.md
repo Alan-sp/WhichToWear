@@ -7,13 +7,13 @@
 
 ## 1、架构设计
 **Clean Android Architect**  
-以Sui为例
-![[./pic/架构.png]]
+以Sui为例  
+![image text](./pic/架构.png)
 ## 2、ui
 总共ui如下  
-![[./pic/ui.png]]
+![image text](./pic/ui.png)
 ## 3、数据库设计
-![[./pic/数据库.png]]
+![image text](./pic/数据库.png)  
 ## 4、功能全解
 1. **实现天气获取**  
 Hilt + retrofit2 组件访问 OpenWeatherMap API 获取当地的天气信息  
