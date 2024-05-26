@@ -42,6 +42,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.widget.Space
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -186,6 +187,7 @@ fun SuitScreen(
         ) {
             LazyColumn(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .fillMaxSize()
                     .padding(16.dp)
                     .padding(horizontal = 16.dp),
@@ -322,6 +324,8 @@ fun SuitScreen(
                                 if (uiState is ClosetUiState.PhotoList) {
                                     addToWearings(uiState.photos)
                                 }
+                                Toast.makeText(context, "已添加至今日穿搭", Toast.LENGTH_SHORT)
+                                    .show()
                             }) {
                                 Text("添加至今日穿搭")
                             }

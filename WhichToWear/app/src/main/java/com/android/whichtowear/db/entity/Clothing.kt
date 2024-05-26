@@ -11,7 +11,6 @@ import com.github.skydoves.colorpicker.compose.ColorEnvelope
 data class Clothing(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "image") val image: String,
-    @ColumnInfo(name = "wear_limit") val wearLimit: Int = 2,
     @ColumnInfo(name = "warmth") val warmth: Float = 0.0f,
     @ColumnInfo(name = "type") val type: Int = 1,
     @ColumnInfo(name = "date") val date: Long = 0,
@@ -32,6 +31,6 @@ data class Clothing(
         color = color
         )
     companion object{
-        fun empty() = Clothing(0, "", 0, 0.0f, 0, 0, 0,"#FFFFFF")
+        fun empty() = Clothing(0, "",  0.0f, 0, 0, 0,"#FFFFFF")
     }
 }

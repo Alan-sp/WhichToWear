@@ -36,7 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.whichtowear.R
-import com.android.whichtowear.ui.survey.ColorPicker.PhotoPickerIcon
 import com.android.whichtowear.ui.survey.QuestionWrapper
 import com.android.whichtowear.ui.theme.WhichToWearTheme
 import com.github.skydoves.colorpicker.compose.AlphaSlider
@@ -82,8 +81,6 @@ fun ImageColorPickerScreen(
     ){
         if(isLoaded){
             Column {
-                PhotoPickerIcon(controller)
-
 
                 val maxWidth = 400.dp
                 val maxHeight = 400.dp

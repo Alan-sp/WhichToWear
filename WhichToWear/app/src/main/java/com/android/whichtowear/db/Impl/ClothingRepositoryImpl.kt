@@ -2,17 +2,17 @@ package com.android.whichtowear.db.Impl
 
 import com.android.whichtowear.db.dao.ClothingDao
 import com.android.whichtowear.db.entity.Clothing
-import com.android.whichtowear.db.repository.ClothingRespository
+import com.android.whichtowear.db.repository.ClothingRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-class ClosetRepositoryImpl @Inject constructor(
+class ClothingRepositoryImpl @Inject constructor(
     private val dao: ClothingDao,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-): ClothingRespository {
+): ClothingRepository {
 
     override fun GetAll()=dao.GetAllClothing()
 

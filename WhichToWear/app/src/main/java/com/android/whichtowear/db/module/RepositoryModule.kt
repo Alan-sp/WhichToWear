@@ -1,12 +1,12 @@
 package com.android.whichtowear.db.module
 
 import android.content.Context
-import com.android.whichtowear.db.Impl.ClosetRepositoryImpl
+import com.android.whichtowear.db.Impl.ClothingRepositoryImpl
 import com.android.whichtowear.db.Impl.DetailRepositoryImpl
 import com.android.whichtowear.db.Impl.WearingRepositoryImpl
 import com.android.whichtowear.db.dao.ClothingDao
 import com.android.whichtowear.db.dao.WearingDao
-import com.android.whichtowear.db.repository.ClothingRespository
+import com.android.whichtowear.db.repository.ClothingRepository
 import com.android.whichtowear.db.repository.DetailRepository
 import com.android.whichtowear.db.repository.WearingRepository
 import com.android.whichtowear.ui.survey.PhotoUriManager
@@ -22,8 +22,8 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideClothingRepository(clothingDao: ClothingDao): ClothingRespository {
-        return ClosetRepositoryImpl(clothingDao)
+    fun provideClothingRepository(clothingDao: ClothingDao): ClothingRepository {
+        return ClothingRepositoryImpl(clothingDao)
     }
 
     @Provides

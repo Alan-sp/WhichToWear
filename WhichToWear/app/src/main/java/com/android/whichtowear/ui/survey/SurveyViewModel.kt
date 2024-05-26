@@ -1,14 +1,12 @@
 package com.android.whichtowear.ui.survey
 
-import android.content.Context
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
-import com.android.whichtowear.db.repository.ClothingRespository
+import com.android.whichtowear.db.repository.ClothingRepository
 import com.android.whichtowear.ui.survey.question.Superhero
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +18,7 @@ const val simpleDateFormatPattern = "EEE, MMM d"
 
 @HiltViewModel
 class SurveyViewModel @Inject constructor(
-    private val repository: ClothingRespository,
+    private val repository: ClothingRepository,
     private val photoUriManager: PhotoUriManager
 ) : ViewModel() {
 

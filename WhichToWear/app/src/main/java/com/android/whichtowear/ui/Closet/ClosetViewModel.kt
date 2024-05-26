@@ -1,13 +1,11 @@
 package com.android.whichtowear.ui.Closet
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-//import com.android.whichtowear.util.toClothingList
 import com.android.whichtowear.db.entity.Clothing
-import com.android.whichtowear.db.repository.ClothingRespository
+import com.android.whichtowear.db.repository.ClothingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +18,7 @@ sealed class ClosetUiState ()
 }
 
 @HiltViewModel
-class ClosetViewModel @Inject constructor(private val repository: ClothingRespository) : ViewModel() {
+class ClosetViewModel @Inject constructor(private val repository: ClothingRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ClosetUiState>(ClosetUiState.PhotoList(emptyList()))
     val uiState: StateFlow<ClosetUiState> = _uiState

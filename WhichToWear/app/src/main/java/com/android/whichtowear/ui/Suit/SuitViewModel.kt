@@ -5,13 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.whichtowear.db.entity.Clothing
 import com.android.whichtowear.db.entity.Wearing
-import com.android.whichtowear.db.repository.ClothingRespository
+import com.android.whichtowear.db.repository.ClothingRepository
 import com.android.whichtowear.db.repository.WearingRepository
 import com.android.whichtowear.retro.data.Weather
 import com.android.whichtowear.retro.repository.WeatherRepository
 import com.android.whichtowear.ui.Closet.ClosetUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SuitViewModel @Inject constructor(
     private val weatherepository: WeatherRepository,
-    private val clothingRespository: ClothingRespository,
+    private val clothingRepository: ClothingRepository,
     private val wearingRepository: WearingRepository
 ): ViewModel()
 {
@@ -35,7 +34,7 @@ class SuitViewModel @Inject constructor(
     val allState: StateFlow<ClosetUiState> = _allState
     init {
         viewModelScope.launch {
-            clothingRespository.GetAll().collect {
+            clothingRepository.GetAll().collect {
                 updateAllState(ClosetUiState.PhotoList(it))
             }
         }
